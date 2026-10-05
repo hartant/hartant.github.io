@@ -7,7 +7,7 @@ export default function App() {
   const [active, setActive] = useState('intro')
   // index.html sets the starting theme before React loads (no flash).
   const [theme, setTheme] = useState(() =>
-    document.documentElement.dataset.theme === 'light' ? 'light' : 'dark'
+    document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light'
   )
 
   useEffect(() => {
