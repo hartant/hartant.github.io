@@ -1,43 +1,39 @@
-import { useEffect } from 'react'
-import Nav from './components/Nav.jsx'
-import Hero from './components/Hero.jsx'
-import { About, Experience, Projects, Websites, Skills, Contact, Footer } from './components/Sections.jsx'
+import { useEffect, useState } from 'react'
+import Rail, { sections } from './components/Rail.jsx'
+import Intro from './components/Intro.jsx'
+import { Experience, Projects, Websites, Skills, Contact, Footer } from './components/Sections.jsx'
 
 export default function App() {
-  // Fade sections in as they scroll into view.
+  const [active, setActive] = useState('intro')
+
+  // Highlight the section currently in the middle of the screen.
   useEffect(() => {
-    const els = document.querySelectorAll('.reveal')
-    if (!('IntersectionObserver' in window)) {
-      els.forEach((el) => el.classList.add('is-visible'))
-      return
-    }
+    const els = sections.map((s) => document.getElementById(s.id)).filter(Boolean)
+    if (!('IntersectionObserver' in window)) return
     const io = new IntersectionObserver(
-      (entries) =>
+      (entries) => {
         entries.forEach((e) => {
-          if (e.isIntersecting) {
-            e.target.classList.add('is-visible')
-            io.unobserve(e.target)
-          }
-        }),
-      { threshold: 0.12 }
+          if (e.isIntersecting) setActive(e.target.id)
+        })
+      },
+      { rootMargin: '-45% 0px -50% 0px' }
     )
     els.forEach((el) => io.observe(el))
     return () => io.disconnect()
   }, [])
 
   return (
-    <>
-      <Nav />
-      <main>
-        <Hero />
-        <About />
+    <div className="layout">
+      <Rail active={active} />
+      <main className="content">
+        <Intro />
         <Experience />
         <Projects />
         <Websites />
         <Skills />
         <Contact />
+        <Footer />
       </main>
-      <Footer />
-    </>
+    </div>
   )
 }

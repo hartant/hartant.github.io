@@ -2,176 +2,124 @@ import { useState } from 'react'
 import Icon from './Icons.jsx'
 import {
   profile,
-  socials,
   experience,
   projects,
   projectFilters,
   websites,
   contacts,
   skills,
-  education,
-  languages,
 } from '../data.js'
 
-function SectionTitle({ index, title }) {
+// Section header written like a data key: projects[6]
+function Key({ name, count, title }) {
   return (
-    <div className="section-title reveal">
-      <span className="mono">{index}.</span>
-      <h2>{title}</h2>
-      <span className="section-title__line" />
-    </div>
-  )
-}
-
-export function About() {
-  return (
-    <section id="about" className="section">
-      <div className="container">
-        <SectionTitle index="01" title="About me" />
-        <div className="about">
-          <div className="about__text reveal">
-            {profile.summary.map((p, i) => (
-              <p key={i}>{p}</p>
-            ))}
-          </div>
-          <aside className="about__side">
-            <div className="panel reveal">
-              <h3>Education</h3>
-              <ul className="edu">
-                {education.map((e) => (
-                  <li key={e.school}>
-                    <strong>{e.school}</strong>
-                    <span>{e.detail}</span>
-                    <span className="muted">
-                      {e.place} · {e.period}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="panel reveal">
-              <h3>Languages</h3>
-              <ul className="langs">
-                {languages.map((l) => (
-                  <li key={l.name}>
-                    <span>{l.name}</span>
-                    <span className="chip chip--soft">{l.level}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </aside>
-        </div>
-      </div>
-    </section>
+    <header className="block__head">
+      <p className="key mono">
+        <span className="key__name">{name}</span>
+        {count !== undefined && <span className="key__count">[{count}]</span>}
+      </p>
+      <h2 className="block__title">{title}</h2>
+    </header>
   )
 }
 
 export function Experience() {
   return (
-    <section id="experience" className="section">
-      <div className="container">
-        <SectionTitle index="02" title="Experience" />
-        <ol className="timeline">
-          {experience.map((job) => (
-            <li key={job.role + job.company} className="timeline__item reveal">
-              <div className="timeline__period mono">{job.period}</div>
-              <div className="timeline__card">
-                <h3>
-                  {job.role} <span className="accent">@ {job.company}</span>
-                </h3>
-                <p className="muted small">
-                  {[job.team, job.location].filter(Boolean).join(' · ')}
-                </p>
-                <ul className="bullets">
-                  {job.points.map((p, i) => (
-                    <li key={i}>{p}</li>
-                  ))}
-                </ul>
-                <div className="chips">
-                  {job.tags.map((t) => (
-                    <span key={t} className="chip">
-                      {t}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </li>
-          ))}
-        </ol>
-      </div>
+    <section id="experience" className="block">
+      <Key name="experience" count={experience.length} title="Where I've worked" />
+      <ol className="jobs">
+        {experience.map((job) => (
+          <li key={job.role + job.company} className="job">
+            <div className="job__when mono">{job.period}</div>
+            <div className="job__body">
+              <h3>
+                {job.role}
+                <span className="job__at"> · {job.company}</span>
+              </h3>
+              <p className="job__meta">{[job.team, job.location].filter(Boolean).join(' · ')}</p>
+              <ul className="job__points">
+                {job.points.map((p, i) => (
+                  <li key={i}>{p}</li>
+                ))}
+              </ul>
+              <p className="tags mono">{job.tags.join('  ·  ')}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
     </section>
   )
 }
 
-const categoryIcon = { ai: 'brain', web: 'globe', school: 'code' }
-const categoryLabel = { ai: 'AI & Data', web: 'Web', school: '1337' }
+const categoryLabel = { ai: 'AI & data', web: 'Web', school: '1337' }
 
 export function Projects() {
   const [filter, setFilter] = useState('all')
   const shown = projects.filter((p) => filter === 'all' || p.category === filter)
 
   return (
-    <section id="projects" className="section">
-      <div className="container">
-        <SectionTitle index="03" title="Projects" />
+    <section id="projects" className="block">
+      <Key name="projects" count={projects.length} title="Things I've built" />
 
-        <div className="filters reveal" role="tablist" aria-label="Filter projects">
-          {projectFilters.map((f) => {
-            const count =
-              f.id === 'all' ? projects.length : projects.filter((p) => p.category === f.id).length
-            if (count === 0) return null
-            return (
-              <button
-                key={f.id}
-                role="tab"
-                aria-selected={filter === f.id}
-                className={`filter ${filter === f.id ? 'is-active' : ''}`}
-                onClick={() => setFilter(f.id)}
-              >
-                {f.label} <span className="filter__count">{count}</span>
-              </button>
-            )
-          })}
-        </div>
-
-        <div className="projects">
-          {shown.map((p) => (
-            <article
-              key={p.title}
-              className={`project ${p.featured ? 'project--featured' : ''}`}
+      <div className="filters" role="tablist" aria-label="Filter projects">
+        {projectFilters.map((f) => {
+          const count =
+            f.id === 'all' ? projects.length : projects.filter((p) => p.category === f.id).length
+          if (count === 0) return null
+          return (
+            <button
+              key={f.id}
+              role="tab"
+              aria-selected={filter === f.id}
+              className={`filter mono ${filter === f.id ? 'is-active' : ''}`}
+              onClick={() => setFilter(f.id)}
             >
-              <div className="project__top">
-                <span className={`project__icon project__icon--${p.category}`}>
-                  <Icon name={categoryIcon[p.category]} size={20} />
+              {f.label} <span>{count}</span>
+            </button>
+          )
+        })}
+      </div>
+
+      <ul className="projects">
+        {shown.map((p) => {
+          const main = p.links.live || p.links.github
+          return (
+            <li key={p.title} className="project">
+              <div className="project__head">
+                <span className={`project__cat mono cat--${p.category}`}>
+                  {categoryLabel[p.category]}
                 </span>
+                <h3>
+                  {main ? (
+                    <a href={main} target="_blank" rel="noreferrer">
+                      {p.title}
+                      <Icon name="arrow" size={18} />
+                    </a>
+                  ) : (
+                    p.title
+                  )}
+                </h3>
+              </div>
+              <p className="project__desc">{p.description}</p>
+              <div className="project__foot">
+                <p className="tags mono">{p.tech.join('  ·  ')}</p>
                 <div className="project__links">
                   {p.links.github && (
-                    <a href={p.links.github} target="_blank" rel="noreferrer" aria-label="Source code on GitHub" title="Source code">
-                      <Icon name="github" />
+                    <a href={p.links.github} target="_blank" rel="noreferrer">
+                      <Icon name="github" size={15} /> Code
                     </a>
                   )}
                   {p.links.live && (
-                    <a href={p.links.live} target="_blank" rel="noreferrer" aria-label="Open project" title="Open project">
-                      <Icon name="external" />
+                    <a href={p.links.live} target="_blank" rel="noreferrer">
+                      <Icon name="external" size={15} /> Live
                     </a>
                   )}
                 </div>
               </div>
-              <span className="project__cat mono">{categoryLabel[p.category]}</span>
-              <h3>{p.title}</h3>
-              <p>{p.description}</p>
-              <div className="chips">
-                {p.tech.map((t) => (
-                  <span key={t} className="chip chip--mono">
-                    {t}
-                  </span>
-                ))}
-              </div>
-            </article>
-          ))}
-        </div>
-      </div>
+            </li>
+          )
+        })}
+      </ul>
     </section>
   )
 }
@@ -196,118 +144,104 @@ function domain(url) {
 export function Websites() {
   if (websites.length === 0) return null
   return (
-    <section id="websites" className="section">
-      <div className="container">
-        <SectionTitle index="04" title="Websites I've built" />
-        <p className="section-lead muted reveal">
-          Live websites I designed and developed for clients and personal projects. Click a logo
-          to visit the site.
-        </p>
-        <ul className="sites">
-          {websites.map((w) => (
-            <li key={w.name} className="reveal">
-              <a
-                className="site"
-                href={w.url}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={`Visit ${w.name} (opens in a new tab)`}
-              >
-                <Icon name="external" size={15} />
-                <span className="site__logo">
-                  {w.logo ? (
-                    <img src={w.logo} alt={`${w.name} logo`} loading="lazy" />
-                  ) : (
-                    <span className="site__monogram">{initials(w.name)}</span>
-                  )}
-                </span>
+    <section id="websites" className="block">
+      <Key name="live_sites" count={websites.length} title="Websites I've shipped" />
+      <ul className="sites">
+        {websites.map((w) => (
+          <li key={w.name}>
+            <a
+              className="site"
+              href={w.url}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={`Visit ${w.name} (opens in a new tab)`}
+            >
+              <span className="site__logo">
+                {w.logo ? (
+                  <img src={w.logo} alt="" loading="lazy" />
+                ) : (
+                  <span className="site__monogram">{initials(w.name)}</span>
+                )}
+              </span>
+              <span className="site__info">
                 <span className="site__name">{w.name}</span>
-                <span className="site__meta mono">{w.type || domain(w.url)}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
+                <span className="site__type">{w.type}</span>
+                <span className="site__url mono">
+                  {domain(w.url)} <Icon name="external" size={13} />
+                </span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
     </section>
   )
 }
 
 export function Skills() {
   return (
-    <section id="skills" className="section">
-      <div className="container">
-        <SectionTitle index="05" title="Skills" />
-        <div className="skills">
-          {skills.map((g) => (
-            <div key={g.group} className="panel reveal">
-              <h3>{g.group}</h3>
-              <div className="chips">
-                {g.items.map((s) => (
-                  <span key={s} className="chip">
-                    {s}
-                  </span>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+    <section id="skills" className="block">
+      <Key name="skills" title="What I work with" />
+      <dl className="skills">
+        {skills.map((g) => (
+          <div key={g.group} className="skills__row">
+            <dt className="mono">{g.group}</dt>
+            <dd>
+              {g.items.map((s) => (
+                <span key={s} className="skill">
+                  {s}
+                </span>
+              ))}
+            </dd>
+          </div>
+        ))}
+      </dl>
     </section>
   )
 }
 
 export function Contact() {
   return (
-    <section id="contact" className="section contact">
-      <div className="container contact__inner reveal">
-        <p className="mono accent">06. What's next?</p>
-        <h2>Let's work together</h2>
-        <p className="muted">
-          I'm open to full-time roles, internships and freelance projects, especially in AI, data
-          and web development. If you have a question or an opportunity, my inbox is open.
-        </p>
-        <div className="hero__cta contact__cta">
-          <a className="btn btn--primary" href={`mailto:${profile.email}`}>
-            <Icon name="mail" size={16} /> Say hello
-          </a>
-          <a className="btn btn--ghost" href={profile.cv} download>
-            <Icon name="download" size={16} /> Download CV
-          </a>
-        </div>
-        <ul className="contacts">
-          {contacts.map((c) => (
-            <li key={c.label}>
-              <a
-                className={`contact-card contact-card--${c.icon}`}
-                href={c.url}
-                target={c.url.startsWith('http') ? '_blank' : undefined}
-                rel="noreferrer"
-              >
-                <span className="contact-card__icon">
-                  <Icon name={c.icon} size={24} />
-                </span>
-                <span className="contact-card__text">
-                  <span className="contact-card__label">{c.label}</span>
-                  <span className="contact-card__value">{c.value}</span>
-                </span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
+    <section id="contact" className="block contact">
+      <Key name="contact" title="Let's work together" />
+      <p className="contact__lead">
+        I'm open to full-time roles, internships and freelance projects in AI, data and web
+        development. The fastest way to reach me is WhatsApp or a call.
+      </p>
+      <ul className="contacts">
+        {contacts.map((c) => (
+          <li key={c.label}>
+            <a
+              className={`contact-card contact-card--${c.icon}`}
+              href={c.url}
+              target={c.url.startsWith('http') ? '_blank' : undefined}
+              rel="noreferrer"
+            >
+              <span className="contact-card__icon">
+                <Icon name={c.icon} size={22} />
+              </span>
+              <span className="contact-card__text">
+                <span className="contact-card__label mono">{c.label}</span>
+                <span className="contact-card__value">{c.value}</span>
+              </span>
+              <span className="contact-card__go" aria-hidden="true">
+                <Icon name="arrow" size={16} />
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
     </section>
   )
 }
 
 export function Footer() {
   return (
-    <footer className="footer">
-      <div className="container footer__inner">
-        <span>
-          © {new Date().getFullYear()} {profile.name}
-        </span>
-        <span className="mono muted">Built with React</span>
-      </div>
+    <footer className="footer mono">
+      <span>
+        © {new Date().getFullYear()} {profile.name}
+      </span>
+      <span>Built with React · hosted on GitHub Pages</span>
     </footer>
   )
 }

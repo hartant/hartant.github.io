@@ -19,7 +19,21 @@ export const profile = {
   ],
 }
 
-// Small icon links shown in the hero.
+// The live "prompt -> parsed" demo at the top of the page.
+export const intro = {
+  prompt:
+    'hey, looking for someone who can take messy data and make it usable... python, LLMs, maybe a web dashboard too? ideally based in morocco',
+  parsed: {
+    name: 'Mohammed Benamar',
+    role: 'Full-Stack / Software Engineer',
+    school: '1337 · 42 Network (UM6P)',
+    focus: ['AI systems', 'data pipelines', 'web apps'],
+    location: 'Casablanca, MA',
+    available: true,
+  },
+}
+
+// Small icon links shown in the side panel.
 export const socials = [
   { label: 'GitHub', url: 'https://github.com/hartant', icon: 'github' },
   { label: 'LinkedIn', url: 'https://www.linkedin.com/in/mohammed-benamar-66abb1372/', icon: 'linkedin' },
