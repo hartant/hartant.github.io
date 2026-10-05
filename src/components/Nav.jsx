@@ -11,7 +11,7 @@ const links = [
   { href: '#contact', label: 'Contact' },
 ]
 
-export default function Nav({ theme, onToggleTheme }) {
+export default function Nav() {
   const [open, setOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
@@ -42,13 +42,6 @@ export default function Nav({ theme, onToggleTheme }) {
         </nav>
 
         <div className="nav__actions">
-          <button
-            className="icon-btn"
-            onClick={onToggleTheme}
-            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
-          >
-            <Icon name={theme === 'dark' ? 'sun' : 'moon'} />
-          </button>
           <button
             className="icon-btn nav__burger"
             onClick={() => setOpen((o) => !o)}

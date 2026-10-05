@@ -1,39 +1,26 @@
 /* ---------- Theme tokens ---------- */
-:root,
-:root[data-theme='dark'] {
-  --bg: #0b0f14;
-  --bg-2: #10161d;
-  --surface: #131a22;
-  --surface-2: #18212b;
-  --border: #233040;
-  --text: #e6edf3;
-  --muted: #8b98a8;
-  --accent: #10b981;
-  --accent-2: #34d399;
-  --accent-soft: rgba(16, 185, 129, 0.12);
-  --ai: #a78bfa;
-  --web: #38bdf8;
-  --school: #fbbf24;
-  --shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.6);
+/* Dark-only theme. Change the palette here. */
+:root {
+  --bg: #06080d;
+  --bg-2: #0a0d14;
+  --surface: #0d1119;
+  --surface-2: #121826;
+  --border: #1b2333;
+  --border-strong: #273149;
+  --text: #e8ecf4;
+  --muted: #8892a6;
+  --accent: #6d8bff;
+  --accent-2: #9b7bff;
+  --accent-3: #38d9e8;
+  --accent-soft: rgba(109, 139, 255, 0.12);
+  --gradient: linear-gradient(135deg, #6d8bff 0%, #9b7bff 55%, #38d9e8 100%);
+  --success: #34d399;
+  --ai: #9b7bff;
+  --web: #38d9e8;
+  --school: #f5b84b;
+  --shadow: 0 20px 50px -20px rgba(0, 0, 0, 0.8);
+  --glow: 0 0 0 1px rgba(109, 139, 255, 0.35), 0 18px 50px -18px rgba(109, 139, 255, 0.45);
   color-scheme: dark;
-}
-
-:root[data-theme='light'] {
-  --bg: #f7f9fb;
-  --bg-2: #eef2f6;
-  --surface: #ffffff;
-  --surface-2: #f3f6f9;
-  --border: #dde4ec;
-  --text: #0f172a;
-  --muted: #5b6878;
-  --accent: #059669;
-  --accent-2: #047857;
-  --accent-soft: rgba(5, 150, 105, 0.1);
-  --ai: #7c3aed;
-  --web: #0284c7;
-  --school: #b45309;
-  --shadow: 0 10px 30px -14px rgba(15, 23, 42, 0.18);
-  color-scheme: light;
 }
 
 /* ---------- Base ---------- */
@@ -52,6 +39,7 @@ html {
 
 body {
   font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-feature-settings: 'cv11', 'ss01';
   background: var(--bg);
   color: var(--text);
   line-height: 1.65;
@@ -118,14 +106,12 @@ button {
   transform: translateY(-2px);
 }
 .btn--primary {
-  background: var(--accent);
-  color: #04130d;
+  background: var(--gradient);
+  color: #fff;
+  box-shadow: 0 10px 30px -10px rgba(109, 139, 255, 0.6);
 }
 .btn--primary:hover {
-  background: var(--accent-2);
-}
-:root[data-theme='light'] .btn--primary {
-  color: #fff;
+  box-shadow: 0 14px 36px -10px rgba(155, 123, 255, 0.75);
 }
 .btn--ghost {
   border: 1px solid var(--border);
@@ -191,7 +177,7 @@ button {
   border-bottom: 1px solid transparent;
 }
 .nav--scrolled {
-  background: color-mix(in srgb, var(--bg) 82%, transparent);
+  background: rgba(6, 8, 13, 0.72);
   backdrop-filter: blur(12px);
   border-bottom-color: var(--border);
 }
@@ -214,8 +200,8 @@ button {
   width: 34px;
   height: 34px;
   border-radius: 9px;
-  background: var(--accent);
-  color: #04130d;
+  background: var(--gradient);
+  color: #fff;
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.85rem;
   font-weight: 700;
@@ -249,12 +235,21 @@ button {
 }
 .hero__glow {
   position: absolute;
-  top: -200px;
-  right: -200px;
-  width: 700px;
-  height: 700px;
-  background: radial-gradient(circle, var(--accent-soft), transparent 65%);
+  top: -260px;
+  right: -180px;
+  width: 760px;
+  height: 760px;
+  background: radial-gradient(circle, rgba(109, 139, 255, 0.18), transparent 62%);
   pointer-events: none;
+}
+.hero__glow::after {
+  content: '';
+  position: absolute;
+  left: -620px;
+  top: 420px;
+  width: 560px;
+  height: 560px;
+  background: radial-gradient(circle, rgba(155, 123, 255, 0.12), transparent 65%);
 }
 .hero::before {
   content: '';
@@ -262,9 +257,9 @@ button {
   inset: 0;
   background-image: linear-gradient(var(--border) 1px, transparent 1px),
     linear-gradient(90deg, var(--border) 1px, transparent 1px);
-  background-size: 48px 48px;
-  mask-image: radial-gradient(ellipse at 30% 30%, black 10%, transparent 65%);
-  opacity: 0.35;
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse at 50% 0%, black 0%, transparent 70%);
+  opacity: 0.4;
   pointer-events: none;
 }
 .hero__inner {
@@ -290,19 +285,18 @@ button {
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 0 0 var(--accent);
+  background: var(--success);
   animation: pulse 2s infinite;
 }
 @keyframes pulse {
   0% {
-    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6);
+    box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.6);
   }
   70% {
-    box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
+    box-shadow: 0 0 0 8px rgba(52, 211, 153, 0);
   }
   100% {
-    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+    box-shadow: 0 0 0 0 rgba(52, 211, 153, 0);
   }
 }
 .hero__hello {
@@ -311,12 +305,23 @@ button {
   margin-bottom: 8px;
 }
 .hero__name {
+  font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  background: linear-gradient(180deg, #ffffff 30%, #a9b4cc 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
   font-size: clamp(2.4rem, 6vw, 4.2rem);
   font-weight: 800;
   line-height: 1.05;
   letter-spacing: -0.03em;
 }
 .hero__role {
+  font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  width: fit-content;
   font-size: clamp(1.3rem, 3vw, 2rem);
   font-weight: 700;
   color: var(--muted);
@@ -406,10 +411,10 @@ button {
   word-break: break-word;
 }
 .t-str {
-  color: var(--accent);
+  color: var(--accent-3);
 }
 .t-ok {
-  color: var(--accent-2);
+  color: var(--success);
 }
 .cursor {
   color: var(--accent);
@@ -441,6 +446,7 @@ button {
   border-left: 1px solid var(--border);
 }
 .stats strong {
+  font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
   font-size: 1.6rem;
   font-weight: 800;
   letter-spacing: -0.02em;
@@ -465,6 +471,7 @@ button {
   font-size: 1rem;
 }
 .section-title h2 {
+  font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
   font-size: clamp(1.6rem, 3vw, 2.1rem);
   font-weight: 800;
   letter-spacing: -0.02em;
@@ -473,13 +480,13 @@ button {
 .section-title__line {
   flex: 1;
   height: 1px;
-  background: var(--border);
+  background: linear-gradient(90deg, var(--border-strong), transparent);
   max-width: 320px;
 }
 
 .panel {
   border: 1px solid var(--border);
-  background: var(--surface);
+  background: linear-gradient(180deg, var(--surface-2), var(--surface));
   border-radius: 14px;
   padding: 24px;
 }
@@ -554,9 +561,21 @@ button {
   transition: border-color 0.2s;
 }
 .timeline__card:hover {
-  border-color: var(--accent);
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow);
+}
+.timeline__card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 22px;
+  bottom: 22px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--gradient);
 }
 .timeline__card h3 {
+  font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
   font-size: 1.15rem;
   font-weight: 700;
 }
@@ -603,11 +622,8 @@ button {
   color: var(--text);
 }
 .filter.is-active {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: #04130d;
-}
-:root[data-theme='light'] .filter.is-active {
+  background: var(--gradient);
+  border-color: transparent;
   color: #fff;
 }
 .filter__count {
@@ -631,8 +647,8 @@ button {
 }
 .project:hover {
   transform: translateY(-4px);
-  border-color: var(--accent);
-  box-shadow: var(--shadow);
+  border-color: transparent;
+  box-shadow: var(--glow);
 }
 .project__top {
   display: flex;
@@ -673,6 +689,7 @@ button {
   color: var(--muted);
 }
 .project h3 {
+  font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
   font-size: 1.2rem;
   font-weight: 700;
   margin: 4px 0 10px;
@@ -729,8 +746,8 @@ button {
 }
 .site:hover {
   transform: translateY(-4px);
-  border-color: var(--accent);
-  box-shadow: var(--shadow);
+  border-color: transparent;
+  box-shadow: var(--glow);
 }
 .site:hover > svg {
   opacity: 1;
@@ -790,7 +807,23 @@ button {
 
 /* Contact */
 .contact {
+  position: relative;
   text-align: center;
+  overflow: hidden;
+}
+.contact::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 900px;
+  height: 500px;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse, rgba(109, 139, 255, 0.12), transparent 65%);
+  pointer-events: none;
+}
+.contact__inner {
+  position: relative;
 }
 .contact__inner {
   max-width: 980px;
@@ -856,16 +889,20 @@ button {
   --brand: #25d366;
 }
 .contact-card--linkedin {
-  --brand: #0a66c2;
+  --brand: #4c9aff;
 }
-:root[data-theme='dark'] .contact-card--linkedin,
-:root:not([data-theme]) .contact-card--linkedin {
-  --brand: #3b8beb;
-}
+
 .contact-card--github {
-  --brand: var(--text);
+  --brand: #c9d1e3;
+}
+.contact-card--phone {
+  --brand: var(--accent);
+}
+.contact-card--mail {
+  --brand: var(--accent-2);
 }
 .contact h2 {
+  font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
   font-size: clamp(2rem, 5vw, 3rem);
   font-weight: 800;
   letter-spacing: -0.03em;

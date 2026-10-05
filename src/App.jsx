@@ -1,30 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import Nav from './components/Nav.jsx'
 import Hero from './components/Hero.jsx'
 import { About, Experience, Projects, Websites, Skills, Contact, Footer } from './components/Sections.jsx'
 
-function getInitialTheme() {
-  try {
-    const saved = localStorage.getItem('theme')
-    if (saved === 'light' || saved === 'dark') return saved
-  } catch {
-    /* storage unavailable */
-  }
-  return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
-}
-
 export default function App() {
-  const [theme, setTheme] = useState(getInitialTheme)
-
-  useEffect(() => {
-    document.documentElement.dataset.theme = theme
-    try {
-      localStorage.setItem('theme', theme)
-    } catch {
-      /* storage unavailable */
-    }
-  }, [theme])
-
   // Fade sections in as they scroll into view.
   useEffect(() => {
     const els = document.querySelectorAll('.reveal')
@@ -48,7 +27,7 @@ export default function App() {
 
   return (
     <>
-      <Nav theme={theme} onToggleTheme={() => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))} />
+      <Nav />
       <main>
         <Hero />
         <About />
