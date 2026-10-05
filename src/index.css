@@ -21,8 +21,34 @@
   --font-body: 'Geist', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-mono: 'Geist Mono', ui-monospace, 'SFMono-Regular', monospace;
 
+  --dots: rgba(140, 160, 210, 0.09);
+  --brand-github: #c9d1e3;
+  --brand-linkedin: #4c9aff;
+
   --rail-w: 380px;
   color-scheme: dark;
+}
+
+/* Light theme: same hues, darker so they read on white */
+:root[data-theme='light'] {
+  --bg: #f6f7fb;
+  --surface: #ffffff;
+  --surface-2: #eef1f8;
+  --line: #e1e5ef;
+  --line-strong: #cdd3e1;
+  --text: #0e1220;
+  --text-2: #3d4558;
+  --muted: #6b7489;
+  --blue: #4361ee;
+  --violet: #7048e8;
+  --cyan: #0891b2;
+  --amber: #b7791f;
+  --green: #059669;
+  --gradient: linear-gradient(120deg, #4361ee 0%, #7048e8 50%, #0891b2 100%);
+  --dots: rgba(40, 55, 100, 0.1);
+  --brand-github: #1f2430;
+  --brand-linkedin: #0a66c2;
+  color-scheme: light;
 }
 
 *,
@@ -39,6 +65,7 @@ html {
 
 body {
   background: var(--bg);
+  transition: background 0.3s, color 0.3s;
   color: var(--text);
   font-family: var(--font-body);
   font-size: 16px;
@@ -51,7 +78,7 @@ body::before {
   content: '';
   position: fixed;
   inset: 0;
-  background-image: radial-gradient(rgba(140, 160, 210, 0.09) 1px, transparent 1px);
+  background-image: radial-gradient(var(--dots) 1px, transparent 1px);
   background-size: 22px 22px;
   pointer-events: none;
   z-index: -1;
@@ -127,6 +154,35 @@ button {
   display: none;
 }
 
+.rail__brand {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--text-2);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.theme-toggle:hover {
+  color: var(--text);
+  border-color: var(--blue);
+}
+
 .rail__mark {
   display: inline-grid;
   place-items: center;
@@ -138,7 +194,6 @@ button {
   font-family: var(--font-mono);
   font-weight: 500;
   font-size: 0.85rem;
-  margin-bottom: 28px;
 }
 
 .rail__name {
@@ -996,11 +1051,11 @@ button {
 }
 
 .contact-card--linkedin {
-  --brand: #4c9aff;
+  --brand: var(--brand-linkedin);
 }
 
 .contact-card--github {
-  --brand: #c9d1e3;
+  --brand: var(--brand-github);
 }
 
 .contact-card--mail {

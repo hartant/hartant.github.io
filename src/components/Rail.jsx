@@ -10,13 +10,23 @@ export const sections = [
   { id: 'contact', label: 'Contact' },
 ]
 
-export default function Rail({ active }) {
+export default function Rail({ active, theme, onToggleTheme }) {
   return (
     <aside className="rail">
       <div className="rail__top">
-        <a href="#intro" className="rail__mark" aria-label="Back to top">
-          MB
-        </a>
+        <div className="rail__brand">
+          <a href="#intro" className="rail__mark" aria-label="Back to top">
+            MB
+          </a>
+          <button
+            className="theme-toggle"
+            onClick={onToggleTheme}
+            aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+          >
+            <Icon name={theme === 'dark' ? 'sun' : 'moon'} size={15} />
+            {theme === 'dark' ? 'Light' : 'Dark'}
+          </button>
+        </div>
         <h1 className="rail__name">
           Mohammed
           <br />

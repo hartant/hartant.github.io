@@ -5,6 +5,23 @@ import { Experience, Projects, Websites, Skills, Contact, Footer } from './compo
 
 export default function App() {
   const [active, setActive] = useState('intro')
+  // index.html sets the starting theme before React loads (no flash).
+  const [theme, setTheme] = useState(() =>
+    document.documentElement.dataset.theme === 'light' ? 'light' : 'dark'
+  )
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme
+    document.querySelector('meta[name="theme-color"]')?.setAttribute(
+      'content',
+      theme === 'light' ? '#f6f7fb' : '#06080d'
+    )
+    try {
+      localStorage.setItem('theme', theme)
+    } catch {
+      /* storage unavailable */
+    }
+  }, [theme])
 
   // Highlight the section currently in the middle of the screen.
   useEffect(() => {
@@ -24,7 +41,11 @@ export default function App() {
 
   return (
     <div className="layout">
-      <Rail active={active} />
+      <Rail
+        active={active}
+        theme={theme}
+        onToggleTheme={() => setTheme((t) => (t === 'dark' ? 'light' : 'dark'))}
+      />
       <main className="content">
         <Intro />
         <Experience />
