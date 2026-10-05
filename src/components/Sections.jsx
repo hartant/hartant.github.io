@@ -7,6 +7,7 @@ import {
   projects,
   projectFilters,
   websites,
+  contacts,
   skills,
   education,
   languages,
@@ -273,21 +274,26 @@ export function Contact() {
             <Icon name="download" size={16} /> Download CV
           </a>
         </div>
-        <div className="socials socials--center">
-          {socials.map((s) => (
-            <a
-              key={s.label}
-              href={s.url}
-              className="icon-btn"
-              aria-label={s.label}
-              title={s.label}
-              target={s.url.startsWith('http') ? '_blank' : undefined}
-              rel="noreferrer"
-            >
-              <Icon name={s.icon} />
-            </a>
+        <ul className="contacts">
+          {contacts.map((c) => (
+            <li key={c.label}>
+              <a
+                className={`contact-card contact-card--${c.icon}`}
+                href={c.url}
+                target={c.url.startsWith('http') ? '_blank' : undefined}
+                rel="noreferrer"
+              >
+                <span className="contact-card__icon">
+                  <Icon name={c.icon} size={24} />
+                </span>
+                <span className="contact-card__text">
+                  <span className="contact-card__label">{c.label}</span>
+                  <span className="contact-card__value">{c.value}</span>
+                </span>
+              </a>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   )

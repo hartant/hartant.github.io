@@ -19,9 +19,21 @@ export const profile = {
   ],
 }
 
+// Small icon links shown in the hero.
 export const socials = [
   { label: 'GitHub', url: 'https://github.com/hartant', icon: 'github' },
+  { label: 'LinkedIn', url: 'https://www.linkedin.com/in/mohammed-benamar-66abb1372/', icon: 'linkedin' },
+  { label: 'WhatsApp', url: 'https://wa.me/212656202902', icon: 'whatsapp' },
   { label: 'Email', url: 'mailto:simoben3502@gmail.com', icon: 'mail' },
+]
+
+// Big contact cards in the Contact section.
+export const contacts = [
+  { label: 'Phone', value: '+212 6 56 20 29 02', url: 'tel:+212656202902', icon: 'phone' },
+  { label: 'WhatsApp', value: 'Chat with me', url: 'https://wa.me/212656202902', icon: 'whatsapp' },
+  { label: 'LinkedIn', value: 'Mohammed Benamar', url: 'https://www.linkedin.com/in/mohammed-benamar-66abb1372/', icon: 'linkedin' },
+  { label: 'GitHub', value: '@hartant', url: 'https://github.com/hartant', icon: 'github' },
+  { label: 'Email', value: 'simoben3502@gmail.com', url: 'mailto:simoben3502@gmail.com', icon: 'mail' },
 ]
 
 export const stats = [

@@ -353,6 +353,10 @@ button {
   display: flex;
   gap: 10px;
 }
+.socials .icon-btn {
+  width: 46px;
+  height: 46px;
+}
 .socials--center {
   justify-content: center;
   margin-top: 32px;
@@ -789,7 +793,77 @@ button {
   text-align: center;
 }
 .contact__inner {
+  max-width: 980px;
+}
+.contact__inner > p.muted {
   max-width: 620px;
+  margin: 0 auto;
+}
+.contacts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 40px;
+  text-align: left;
+}
+.contacts > li {
+  flex: 0 1 300px;
+}
+.contact-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 100%;
+  padding: 18px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: 14px;
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+.contact-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--brand, var(--accent));
+  box-shadow: var(--shadow);
+}
+.contact-card__icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--brand, var(--accent)) 14%, transparent);
+  color: var(--brand, var(--accent));
+}
+.contact-card__text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.contact-card__label {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+.contact-card__value {
+  font-weight: 700;
+  font-size: 0.95rem;
+  overflow-wrap: anywhere;
+}
+.contact-card--whatsapp {
+  --brand: #25d366;
+}
+.contact-card--linkedin {
+  --brand: #0a66c2;
+}
+:root[data-theme='dark'] .contact-card--linkedin,
+:root:not([data-theme]) .contact-card--linkedin {
+  --brand: #3b8beb;
+}
+.contact-card--github {
+  --brand: var(--text);
 }
 .contact h2 {
   font-size: clamp(2rem, 5vw, 3rem);
@@ -907,6 +981,9 @@ button {
   }
   .projects {
     grid-template-columns: 1fr;
+  }
+  .contacts > li {
+    flex-basis: 100%;
   }
   .sites {
     grid-template-columns: 1fr;

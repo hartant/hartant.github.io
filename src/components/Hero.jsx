@@ -41,7 +41,7 @@ export default function Hero() {
                   target={s.url.startsWith('http') ? '_blank' : undefined}
                   rel="noreferrer"
                 >
-                  <Icon name={s.icon} />
+                  <Icon name={s.icon} size={20} />
                 </a>
               ))}
             </div>
