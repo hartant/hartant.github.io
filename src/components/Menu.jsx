@@ -1,5 +1,5 @@
 import Icon from './Icons.jsx'
-import { HeroCutout } from './Art.jsx'
+import { HeroImage } from './Art.jsx'
 import { PAGES } from './Pages.jsx'
 import { profile, socials } from '../data.js'
 
@@ -7,7 +7,9 @@ export default function Menu({ selected, onSelect, onOpen }) {
   return (
     <div className="home">
       <div className="home__art">
-        <HeroCutout />
+        <div className="home__art-clip">
+          <HeroImage />
+        </div>
       </div>
 
       <div className="home__brand">

@@ -237,13 +237,34 @@ export function MoonArt({ viewBox = '0 0 400 520' }) {
   )
 }
 
-// Small square crops used as row avatars.
+// Character pictures (Black Cat fan art), cropped with object-position + zoom.
+const GUN = 'art/train-gun.webp'
+const PROFILE = 'art/train-profile.webp'
+
+export function ArtImg({ src, pos = '50% 50%', zoom = 1, alt = '' }) {
+  return (
+    <img
+      className="art-img"
+      src={src}
+      alt={alt}
+      loading="lazy"
+      style={{ objectPosition: pos, transform: `scale(${zoom})`, transformOrigin: pos }}
+    />
+  )
+}
+
+// Main menu picture: the gun-pointing shot.
+export function HeroImage() {
+  return <ArtImg src={GUN} pos="48% 40%" alt="Anime character with gold eyes pointing a revolver" />
+}
+
+// Small crops used as row avatars.
 const THUMBS = [
-  () => <HeroArt viewBox="130 220 140 140" />,
-  () => <ProfileArt viewBox="20 0 170 170" />,
+  () => <ArtImg src={GUN} pos="52% 42%" zoom={2.2} />,
+  () => <ArtImg src={PROFILE} pos="12% 8%" zoom={2.4} />,
   () => <MoonArt viewBox="160 80 180 180" />,
-  () => <ProfileArt viewBox="250 165 120 120" />,
-  () => <HeroArt viewBox="60 40 300 300" />,
+  () => <ArtImg src={PROFILE} pos="64% 56%" zoom={2.6} />,
+  () => <ArtImg src={GUN} pos="40% 55%" zoom={1.6} />,
 ]
 
 export function Thumb({ index = 0 }) {
@@ -260,19 +281,19 @@ export function Collage() {
   return (
     <div className="collage" aria-hidden="true">
       <div className="panel panel--a">
-        <ProfileArt />
+        <ArtImg src={PROFILE} />
       </div>
       <div className="panel panel--b">
-        <HeroArt viewBox="110 200 200 160" />
+        <ArtImg src={GUN} pos="55% 42%" zoom={1.8} />
       </div>
       <div className="panel panel--c">
         <MoonArt viewBox="60 40 340 300" />
       </div>
       <div className="panel panel--d">
-        <HeroArt viewBox="0 0 400 260" />
+        <ArtImg src={GUN} pos="30% 50%" zoom={1.1} />
       </div>
       <div className="panel panel--e">
-        <ProfileArt viewBox="250 160 200 165" />
+        <ArtImg src={PROFILE} pos="66% 58%" zoom={2.2} />
       </div>
     </div>
   )
