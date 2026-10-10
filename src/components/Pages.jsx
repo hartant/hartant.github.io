@@ -22,7 +22,7 @@ export const PAGES = [
   { id: 'skills', label: 'Skills', note: `${skillCount} tools & languages` },
   { id: 'about', label: 'About', note: '1337 · UM6P · Casablanca' },
   { id: 'links', label: 'Links', note: 'Phone · WhatsApp · LinkedIn' },
-  { id: 'credits', label: 'Credits', note: 'Music, art & thanks' },
+  { id: 'credits', label: 'Credits', note: 'Code, music & fonts' },
 ]
 
 /* ---------- Row data for each page ---------- */
@@ -160,23 +160,7 @@ function creditRows() {
   return [
     { key: 'code', icon: 'code', title: 'Design & code', sub: `${profile.name} · React + Vite`, side: '' },
     { key: 'music', icon: 'volume', title: 'Music', sub: 'Original, 3 tracks generated live with the Web Audio API', side: '' },
-    {
-      key: 'art',
-      icon: 'brain',
-      title: 'Character art',
-      sub: 'Train Heartnet from Black Cat © Kentaro Yabuki / Shueisha · fan use, not affiliated',
-      side: '',
-    },
-    { key: 'moon', icon: 'globe', title: 'Moon illustration', sub: 'Original SVG, drawn in code', side: '' },
-    { key: 'fonts', icon: 'globe', title: 'Fonts', sub: 'Archivo & Geist Mono · SIL Open Font License', side: '' },
-    {
-      key: 'inspo',
-      icon: 'external',
-      title: 'Layout inspiration',
-      sub: "David Yappeter's game-menu portfolio",
-      side: '',
-      href: 'https://david-yappeter.github.io/persona3-porto/',
-    },
+    { key: 'fonts', icon: 'globe', title: 'Fonts', sub: 'Archivo & Geist Mono', side: '' },
   ]
 }
 

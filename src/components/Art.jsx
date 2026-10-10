@@ -237,7 +237,7 @@ export function MoonArt({ viewBox = '0 0 400 520' }) {
   )
 }
 
-// Character pictures (Black Cat fan art), cropped with object-position + zoom.
+// Character pictures, cropped with object-position + zoom.
 const GUN = 'art/train-gun.webp'
 const PROFILE = 'art/train-profile.webp'
 
