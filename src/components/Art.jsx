@@ -127,56 +127,82 @@ export function HeroArt({ viewBox = '0 0 400 520' }) {
   )
 }
 
-// Close-up side profile: blue-tinted face, gold eye, red </> mark on the neck,
-// with a canvas-like grain.
-export function ProfileArt({ viewBox = '0 0 400 300' }) {
+// Close-up side profile, framed like an anime still: big gold eye top-left
+// under the hair, pale blue face looking down-left, long neck with a red
+// hand-drawn diamond mark, dark shadow on the right, canvas texture on top.
+export function ProfileArt({ viewBox = '0 0 500 375' }) {
   const id = useId().replace(/:/g, '')
   return (
     <svg className="art" viewBox={viewBox} aria-hidden="true">
       <defs>
         <filter id={`grain${id}`} x="0" y="0" width="100%" height="100%">
-          <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch" />
-          <feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.16 0" />
+          <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="3" stitchTiles="stitch" />
+          <feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.22 0" />
         </filter>
-        <linearGradient id={`skin${id}`} x1="0" y1="0" x2="1" y2="1">
+        <filter id={`soft${id}`}>
+          <feGaussianBlur stdDeviation="0.6" />
+        </filter>
+        <linearGradient id={`skin${id}`} x1="0" y1="0" x2="0.7" y2="1">
           <stop offset="0" stopColor="var(--p-skin-1)" />
           <stop offset="1" stopColor="var(--p-skin-2)" />
         </linearGradient>
+        <radialGradient id={`iris${id}`} cx="45%" cy="40%" r="60%">
+          <stop offset="0" stopColor="#ffe68a" />
+          <stop offset="0.6" stopColor="var(--eye-1)" />
+          <stop offset="1" stopColor="#b8860b" />
+        </radialGradient>
       </defs>
-      <rect width="400" height="300" className="p-bg" />
-      {/* face, profile edge on the left: brow, nose, lips, chin */}
-      <path
-        fill={`url(#skin${id})`}
-        d="M40 0 L400 0 L400 300 L96 300 L124 252 L150 238 L168 218 L160 207 L176 193 L166 178 L136 152 L112 122 Z"
-      />
-      {/* neck below the jawline */}
-      <path className="p-neck" d="M150 240 Q232 204 304 118 L352 150 L322 300 L170 300 Z" />
-      <path className="p-line" d="M150 240 Q232 204 304 118" />
-      {/* cheek light */}
-      <path className="p-light" d="M126 150 Q160 160 200 150 Q170 182 140 172 Z" />
-      {/* deep shadow on the right */}
-      <path className="p-shadow" d="M336 0 L400 0 L400 300 L312 300 Q372 196 336 0 Z" />
-      {/* hair */}
-      <path
-        className="p-hair"
-        d="M0 0 L340 0 L306 34 L328 64 L276 52 L256 96 L234 58 L206 104 L194 62 L164 108 L152 72 L128 104 L110 82 L76 98 L58 80 L30 108 L0 96 Z"
-      />
-      <path className="p-strand" d="M300 10 L250 80 M240 20 L200 92 M180 14 L160 96 M120 18 L112 90 M70 22 L60 76" />
-      {/* eye */}
-      <path className="p-eye-white" d="M60 128 Q92 102 134 120 Q102 144 60 128 Z" />
-      <circle className="p-iris" cx="102" cy="123" r="11" />
-      <circle className="p-pupil" cx="104" cy="123" r="4" />
-      <circle className="p-glint" cx="98" cy="119" r="2.5" />
-      <path className="p-lid" d="M56 127 Q92 98 138 118" />
-      {/* coat collar, bottom left */}
-      <path className="p-coat" d="M0 300 L0 172 L62 204 L134 262 L206 300 Z" />
-      <path className="p-collar" d="M0 172 L62 204 L134 262 L206 300" />
-      {/* mark: a diamond with code brackets */}
-      <g className="p-mark">
-        <path d="M300 176 L328 214 L300 252 L272 214 Z" />
-        <path d="M292 204 L283 214 L292 224 M308 204 L317 214 L308 224 M303 200 L297 228" />
+
+      <g filter={`url(#soft${id})`}>
+        <rect width="500" height="375" className="p-bg" />
+
+        {/* face and neck */}
+        <path
+          fill={`url(#skin${id})`}
+          d="M40 0 L330 0 L345 60 L332 150 L346 262 L332 375 L236 375 L214 330 L198 306 L172 288 L180 272 L152 262 L162 250 L104 240 L92 200 L70 150 L40 110 L26 70 Z"
+        />
+        {/* neck in slightly deeper shade, under the jaw */}
+        <path className="p-neck" d="M162 200 Q206 230 250 258 L304 232 L346 262 L332 375 L236 375 L214 330 L198 306 Z" />
+        {/* soft light on the cheek */}
+        <path className="p-light" d="M110 70 Q170 60 182 120 Q150 170 118 150 Q96 110 110 70 Z" />
+
+        {/* contour lines: cheek and jaw */}
+        <path className="p-line" d="M188 18 Q176 108 160 186" />
+        <path className="p-line" d="M162 200 Q206 230 250 258" />
+        <path className="p-line p-line--thin" d="M206 300 Q230 330 240 372" />
+
+        {/* deep shadow and hair mass on the right */}
+        <path className="p-shadow" d="M332 0 L500 0 L500 375 L332 375 L346 262 L332 150 L345 60 Z" />
+        <path className="p-hair" d="M196 0 L500 0 L500 118 L452 150 L432 92 L392 144 L368 62 L336 124 L310 44 L280 30 Z" />
+        <path className="p-strand" d="M470 20 L410 120 M420 10 L372 100 M360 8 L330 90 M300 6 L290 40" />
+
+        {/* hair strands over the eye, top-left */}
+        <path className="p-hair" d="M0 0 L120 0 L96 10 L70 4 L46 26 L24 14 L10 74 L0 70 Z" />
+        <path className="p-hair" d="M0 70 L58 36 L18 112 Z" />
+        <path className="p-hair" d="M0 134 L44 112 L10 168 Z" />
+        <path className="p-hair" d="M140 0 L206 0 L182 30 L168 12 Z" /><path className="p-strand" d="M60 6 L30 50 M196 4 L176 26 M30 20 L12 66" />
+
+        {/* the eye */}
+        <path className="p-eye-white" d="M26 66 Q80 -6 168 16 Q130 88 26 66 Z" />
+        <ellipse cx="98" cy="36" rx="25" ry="31" fill={`url(#iris${id})`} className="p-iris" />
+        <ellipse className="p-pupil" cx="101" cy="36" rx="5" ry="20" />
+        <circle className="p-glint" cx="88" cy="24" r="4.5" />
+        <path className="p-lid" d="M22 66 Q78 -12 174 14" />
+        <path className="p-lid p-lid--low" d="M42 72 Q110 86 152 52" />
+
+        {/* dark coat / background on the left and bottom-left */}
+        <path className="p-coat" d="M0 118 L40 110 L70 150 L92 200 L104 240 L162 250 L152 262 L180 272 L172 288 L198 306 L214 330 L236 375 L0 375 Z" />
+        <path className="p-collar" d="M58 258 Q130 300 186 336" />
+
+        {/* the mark: a sketchy red diamond with code brackets */}
+        <g className="p-mark">
+          <path d="M310 180 L340 232 L300 276 L276 222 Z" />
+          <path d="M312 184 L337 234 L302 272 L279 220 Z" opacity="0.6" />
+          <path d="M298 214 L289 226 L299 238 M316 212 L325 224 L315 236 M311 208 L303 244" />
+        </g>
       </g>
-      <rect width="400" height="300" filter={`url(#grain${id})`} />
+
+      <rect width="500" height="375" filter={`url(#grain${id})`} />
     </svg>
   )
 }
@@ -214,9 +240,9 @@ export function MoonArt({ viewBox = '0 0 400 520' }) {
 // Small square crops used as row avatars.
 const THUMBS = [
   () => <HeroArt viewBox="130 220 140 140" />,
-  () => <ProfileArt viewBox="40 80 140 140" />,
+  () => <ProfileArt viewBox="20 0 170 170" />,
   () => <MoonArt viewBox="160 80 180 180" />,
-  () => <ProfileArt viewBox="250 160 100 100" />,
+  () => <ProfileArt viewBox="250 165 120 120" />,
   () => <HeroArt viewBox="60 40 300 300" />,
 ]
 
@@ -246,7 +272,7 @@ export function Collage() {
         <HeroArt viewBox="0 0 400 260" />
       </div>
       <div className="panel panel--e">
-        <ProfileArt viewBox="230 140 160 130" />
+        <ProfileArt viewBox="250 160 200 165" />
       </div>
     </div>
   )

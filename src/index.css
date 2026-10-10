@@ -66,14 +66,14 @@
   --window: #ffd23f;
 
   /* profile art */
-  --p-bg: #0a0f2e;
-  --p-skin-1: #a9b3ff;
-  --p-skin-2: #7480e6;
-  --p-neck: #6370d8;
+  --p-bg: #0b1238;
+  --p-skin-1: #b4bdfa;
+  --p-skin-2: #8590ea;
+  --p-neck: #8a95ea;
   --p-shadow: #1a2270;
-  --p-hair: #10164a;
-  --p-strand: #3d4bc0;
-  --p-mark: #ff4d6d;
+  --p-hair: #0f1550;
+  --p-strand: #34409f;
+  --p-mark: #ff5a6e;
 
   --font: 'Archivo', system-ui, sans-serif;
   --mono: 'Geist Mono', ui-monospace, monospace;
@@ -625,10 +625,15 @@ button {
 .p-neck { fill: var(--p-neck); }
 .p-line {
   fill: none;
-  stroke: var(--p-shadow);
-  stroke-width: 2.5;
+  stroke: #3a44a8;
+  stroke-width: 3;
+  stroke-linecap: round;
 }
-.p-light { fill: #ffffff; opacity: 0.18; }
+.p-line--thin {
+  stroke-width: 2;
+  opacity: 0.7;
+}
+.p-light { fill: #ffffff; opacity: 0.14; }
 .p-shadow { fill: var(--p-shadow); }
 .p-hair { fill: var(--p-hair); }
 .p-strand {
@@ -638,14 +643,18 @@ button {
   stroke-linecap: round;
 }
 .p-eye-white { fill: #f4f1e6; }
-.p-iris { fill: var(--eye-1); stroke: var(--eye-2); stroke-width: 1.5; }
-.p-pupil { fill: #2a1a00; }
+.p-iris { stroke: #6b4a00; stroke-width: 1.5; }
+.p-pupil { fill: #1e1400; }
 .p-glint { fill: #fff; }
 .p-lid {
   fill: none;
   stroke: var(--p-hair);
-  stroke-width: 6;
+  stroke-width: 7;
   stroke-linecap: round;
+}
+.p-lid--low {
+  stroke-width: 2.5;
+  opacity: 0.8;
 }
 .p-coat { fill: #05060f; }
 .p-collar {
@@ -656,10 +665,10 @@ button {
 .p-mark path {
   fill: none;
   stroke: var(--p-mark);
-  stroke-width: 2.6;
+  stroke-width: 2.4;
   stroke-linejoin: round;
   stroke-linecap: round;
-  opacity: 0.9;
+  opacity: 0.85;
 }
 
 /* ============================================================
