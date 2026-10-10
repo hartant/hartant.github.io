@@ -1,13 +1,11 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Icon from './Icons.jsx'
-import TopBar from './TopBar.jsx'
-import { ART } from './Art.jsx'
+import { Collage, Thumb } from './Art.jsx'
 import {
   profile,
   contacts,
   experience,
   projects,
-  projectFilters,
   websites,
   skills,
   education,
@@ -15,251 +13,338 @@ import {
 } from '../data.js'
 
 const skillCount = skills.reduce((n, g) => n + g.items.length, 0)
+const isExternal = (url) => url.startsWith('http')
 
-// Menu entries. `note` is the small line shown under the selected word.
+// Main menu entries. `note` is the small line shown under the selected word.
 export const PAGES = [
-  { id: 'about', label: 'About', note: '1337 · UM6P · Casablanca', art: 'close' },
-  { id: 'career', label: 'Career', note: `${experience.length} roles · AI & web`, art: 'moon' },
-  { id: 'projects', label: 'Projects', note: `${projects.length} builds · AI, data, 1337`, art: 'close' },
-  { id: 'websites', label: 'Websites', note: `${websites.length} live sites`, art: 'moon' },
-  { id: 'skills', label: 'Skills', note: `${skillCount} tools & languages`, art: 'close' },
-  { id: 'contact', label: 'Contact', note: 'Phone · WhatsApp · Email', art: 'moon' },
+  { id: 'career', label: 'Career', note: `${experience.length} roles · AI & web` },
+  { id: 'build', label: 'Build', note: `${projects.length} projects · ${websites.length} live sites` },
+  { id: 'skills', label: 'Skills', note: `${skillCount} tools & languages` },
+  { id: 'about', label: 'About', note: '1337 · UM6P · Casablanca' },
+  { id: 'links', label: 'Links', note: 'Phone · WhatsApp · LinkedIn' },
+  { id: 'credits', label: 'Credits', note: 'Original music & art' },
 ]
 
-const external = (url) => (url.startsWith('http') ? { target: '_blank', rel: 'noreferrer' } : {})
+/* ---------- Row data for each page ---------- */
 
-function About() {
-  return (
-    <>
-      <div className="banner banner--text">
-        {profile.summary.map((p, i) => (
-          <p key={i}>{p}</p>
-        ))}
-      </div>
-      {education.map((e) => (
-        <div key={e.school} className="banner">
-          <span className="tag tag--violet">Education</span>
-          <div className="banner__main">
-            <h3>{e.school}</h3>
-            <p className="banner__sub">{e.detail}</p>
-          </div>
-          <p className="banner__side">
-            {e.place}
-            <br />
-            {e.period}
-          </p>
-        </div>
-      ))}
-      <div className="banner">
-        <span className="tag tag--cyan">Languages</span>
-        <div className="banner__main">
-          <p className="langs">
-            {languages.map((l) => (
-              <span key={l.name}>
-                {l.name} <em>{l.level}</em>
-              </span>
-            ))}
-          </p>
-        </div>
-      </div>
-    </>
-  )
-}
-
-function Career() {
-  return experience.map((job) => {
-    const current = /present/i.test(job.period)
-    return (
-      <article key={job.role + job.company} className="banner banner--stack">
-        <div className="banner__row">
-          {current ? <span className="tag tag--gold">Current</span> : <span className="tag">Past</span>}
-          <div className="banner__main">
-            <h3>{job.role}</h3>
-            <p className="banner__sub">
-              {[job.company, job.location].filter(Boolean).join(' · ')}
-            </p>
-          </div>
-          <p className="banner__side">{job.period}</p>
-        </div>
+function careerRows() {
+  return experience.map((job, i) => ({
+    key: job.role + job.company,
+    stamp: /present/i.test(job.period) ? 'Current' : null,
+    thumb: i,
+    title: job.role,
+    sub: [job.company, job.location].filter(Boolean).join(', '),
+    side: job.period,
+    details: (
+      <>
         <ul className="points">
-          {job.points.map((p, i) => (
-            <li key={i}>{p}</li>
+          {job.points.map((p, j) => (
+            <li key={j}>{p}</li>
           ))}
         </ul>
         <p className="tech">{job.tags.join(' / ')}</p>
-      </article>
-    )
-  })
+      </>
+    ),
+  }))
 }
 
-const catTag = { ai: ['AI & data', 'tag--violet'], web: ['Web', 'tag--cyan'], school: ['1337', 'tag--gold'] }
+const BUILD_TABS = [
+  { id: 'sites', label: 'Live sites' },
+  { id: 'ai', label: 'AI & data' },
+  { id: 'school', label: '1337' },
+]
 
-function Projects() {
-  const [filter, setFilter] = useState('all')
-  const shown = projects.filter((p) => filter === 'all' || p.category === filter)
-  return (
-    <>
-      <div className="tabs" role="tablist" aria-label="Filter projects">
-        {projectFilters.map((f) => {
-          const count =
-            f.id === 'all' ? projects.length : projects.filter((p) => p.category === f.id).length
-          if (!count) return null
-          return (
-            <button
-              key={f.id}
-              role="tab"
-              aria-selected={filter === f.id}
-              className={`tab ${filter === f.id ? 'is-active' : ''}`}
-              onClick={() => setFilter(f.id)}
-            >
-              <span>
-                {f.label} {count}
-              </span>
-            </button>
-          )
-        })}
-      </div>
-      {shown.map((p) => (
-        <article key={p.title} className="banner banner--stack">
-          <div className="banner__row">
-            <span className={`tag ${catTag[p.category][1]}`}>{catTag[p.category][0]}</span>
-            <div className="banner__main">
-              <h3>{p.title}</h3>
-            </div>
-            <div className="links">
-              {p.links.github && (
-                <a href={p.links.github} {...external(p.links.github)}>
-                  <Icon name="github" size={15} /> Code
-                </a>
-              )}
-              {p.links.live && (
-                <a href={p.links.live} {...external(p.links.live)}>
-                  <Icon name="external" size={15} /> Live
-                </a>
-              )}
-            </div>
-          </div>
+function buildRows(tab) {
+  if (tab === 'sites') {
+    return websites.map((w) => ({
+      key: w.name,
+      logo: w.logo,
+      title: w.name,
+      sub: w.type,
+      side: '',
+      href: w.url,
+    }))
+  }
+  return projects
+    .filter((p) => p.category === tab)
+    .map((p, i) => ({
+      key: p.title,
+      thumb: i + 1,
+      title: p.title,
+      sub: p.tech.slice(0, 3).join(' · '),
+      side: p.links.live ? 'Live' : p.links.github ? 'Code' : '',
+      href: p.links.live || p.links.github,
+      details: (
+        <>
           <p className="desc">{p.description}</p>
           <p className="tech">{p.tech.join(' / ')}</p>
-        </article>
-      ))}
-    </>
-  )
+          <p className="row__links">
+            {p.links.github && (
+              <a href={p.links.github} target="_blank" rel="noreferrer">
+                <Icon name="github" size={14} /> Code
+              </a>
+            )}
+            {p.links.live && (
+              <a href={p.links.live} target="_blank" rel="noreferrer">
+                <Icon name="external" size={14} /> Live
+              </a>
+            )}
+          </p>
+        </>
+      ),
+    }))
 }
 
-function Websites() {
-  return (
-    <div className="sites">
-      {websites.map((w) => (
-        <a key={w.name} className="site" href={w.url} {...external(w.url)} aria-label={`Visit ${w.name} (opens in a new tab)`}>
-          <span className="site__plate">
-            <img src={w.logo} alt="" loading="lazy" />
-          </span>
-          <span className="site__info">
-            <strong>{w.name}</strong>
-            <span>{w.type}</span>
-            <span className="site__url">
-              {new URL(w.url).hostname} <Icon name="external" size={13} />
-            </span>
-          </span>
-        </a>
-      ))}
-    </div>
-  )
-}
-
-function Skills() {
-  return skills.map((g) => (
-    <div key={g.group} className="banner banner--stack">
-      <div className="banner__row">
-        <div className="banner__main">
-          <h3>{g.group}</h3>
-        </div>
-        <p className="banner__side">{g.items.length}</p>
-      </div>
-      <p className="skills">
+function skillRows() {
+  return skills.map((g, i) => ({
+    key: g.group,
+    thumb: i + 2,
+    title: g.group,
+    sub: `${g.items.length} skills`,
+    side: '',
+    open: true,
+    details: (
+      <p className="chips">
         {g.items.map((s) => (
           <span key={s}>{s}</span>
         ))}
       </p>
-    </div>
-  ))
+    ),
+  }))
 }
 
-function Contact() {
+function aboutRows() {
+  return [
+    ...education.map((e, i) => ({
+      key: e.school,
+      stamp: i === 0 ? 'School' : null,
+      thumb: i + 3,
+      title: e.school,
+      sub: `${e.detail} · ${e.place}`,
+      side: e.period,
+    })),
+    {
+      key: 'languages',
+      thumb: 0,
+      title: 'Languages',
+      sub: languages.map((l) => `${l.name} ${l.level}`).join(' · '),
+      side: '',
+    },
+  ]
+}
+
+function linkRows() {
+  return [
+    ...contacts.map((c) => ({
+      key: c.label,
+      icon: c.icon,
+      title: c.value,
+      sub: c.label,
+      side: '',
+      href: c.url,
+    })),
+    {
+      key: 'cv',
+      icon: 'download',
+      title: 'Download my CV',
+      sub: 'PDF',
+      side: '',
+      href: profile.cv,
+      download: true,
+      gold: true,
+    },
+  ]
+}
+
+function creditRows() {
+  return [
+    { key: 'code', icon: 'code', title: 'Design & code', sub: `${profile.name} · React + Vite`, side: '' },
+    { key: 'music', icon: 'volume', title: 'Music', sub: 'Original, 3 tracks generated live with the Web Audio API', side: '' },
+    { key: 'art', icon: 'brain', title: 'Artwork', sub: 'Original SVG illustrations drawn in code', side: '' },
+    { key: 'fonts', icon: 'globe', title: 'Fonts', sub: 'Archivo & Geist Mono · SIL Open Font License', side: '' },
+    {
+      key: 'inspo',
+      icon: 'external',
+      title: 'Layout inspiration',
+      sub: "David Yappeter's game-menu portfolio",
+      side: '',
+      href: 'https://david-yappeter.github.io/persona3-porto/',
+    },
+  ]
+}
+
+/* ---------- Row list with keyboard selection ---------- */
+
+function Rows({ rows }) {
+  const [sel, setSel] = useState(0)
+  const listRef = useRef(null)
+
+  useEffect(() => setSel(0), [rows.length, rows[0]?.key])
+
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.altKey || e.ctrlKey || e.metaKey) return
+      if (e.key === 'ArrowDown') {
+        e.preventDefault()
+        setSel((s) => Math.min(s + 1, rows.length - 1))
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault()
+        setSel((s) => Math.max(s - 1, 0))
+      } else if (e.key === 'Enter' && document.activeElement === document.body) {
+        const row = rows[sel]
+        if (row?.href) {
+          if (row.download) listRef.current?.querySelectorAll('.row__bar')[sel]?.click()
+          else window.open(row.href, isExternal(row.href) ? '_blank' : '_self', 'noreferrer')
+        }
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [rows, sel])
+
+  useEffect(() => {
+    listRef.current?.children[sel]?.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
+  }, [sel])
+
+  return (
+    <ul className="rows" ref={listRef}>
+      {rows.map((row, i) => {
+        const inner = (
+          <>
+            {row.stamp && <span className="row__stamp">{row.stamp}</span>}
+            {row.logo ? (
+              <span className="thumb thumb--logo">
+                <img src={row.logo} alt="" />
+              </span>
+            ) : row.icon ? (
+              <span className={`thumb thumb--icon icon--${row.icon}`}>
+                <Icon name={row.icon} size={24} />
+              </span>
+            ) : (
+              <Thumb index={row.thumb} />
+            )}
+            <span className="row__main">
+              <span className="row__title">{row.title}</span>
+              <span className="row__sub">{row.sub}</span>
+            </span>
+            {row.side && <span className="row__side">{row.side}</span>}
+            {row.href && !row.details && <Icon name="arrow" size={18} />}
+          </>
+        )
+        const barProps = {
+          className: 'row__bar',
+          onMouseEnter: () => setSel(i),
+          onFocus: () => setSel(i),
+        }
+        return (
+          <li
+            key={row.key}
+            className={`row ${sel === i ? 'is-selected' : ''} ${row.gold ? 'row--gold' : ''} ${row.open ? 'is-open' : ''}`}
+            style={{ '--i': i }}
+          >
+            {row.href && !row.details ? (
+              <a
+                {...barProps}
+                href={row.href}
+                {...(row.download ? { download: true } : isExternal(row.href) ? { target: '_blank', rel: 'noreferrer' } : {})}
+              >
+                {inner}
+              </a>
+            ) : (
+              <button {...barProps} onClick={() => setSel(i)} aria-expanded={row.details ? sel === i || !!row.open : undefined}>
+                {inner}
+              </button>
+            )}
+            {row.details && (
+              <div className="row__details">
+                <div className="row__details-in">{row.details}</div>
+              </div>
+            )}
+          </li>
+        )
+      })}
+    </ul>
+  )
+}
+
+/* ---------- Page shell ---------- */
+
+function BuildBody() {
+  const [tab, setTab] = useState('sites')
+
+  useEffect(() => {
+    const onKey = (e) => {
+      const i = BUILD_TABS.findIndex((t) => t.id === tab)
+      if (e.key === 'ArrowRight') setTab(BUILD_TABS[(i + 1) % BUILD_TABS.length].id)
+      if (e.key === 'ArrowLeft') setTab(BUILD_TABS[(i - 1 + BUILD_TABS.length) % BUILD_TABS.length].id)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [tab])
+
   return (
     <>
-      <p className="lead">
-        Open to full-time roles, internships and freelance work in AI, data and web development.
-        WhatsApp or a call is the fastest way to reach me.
-      </p>
-      {contacts.map((c) => (
-        <a key={c.label} className={`banner banner--link contact--${c.icon}`} href={c.url} {...external(c.url)}>
-          <span className="contact__icon">
-            <Icon name={c.icon} size={22} />
-          </span>
-          <div className="banner__main">
-            <p className="banner__label">{c.label}</p>
-            <h3>{c.value}</h3>
-          </div>
-          <span className="banner__go">
-            <Icon name="arrow" size={18} />
-          </span>
-        </a>
-      ))}
-      <a className="banner banner--link banner--gold" href={profile.cv} download>
-        <span className="contact__icon">
-          <Icon name="download" size={22} />
-        </span>
-        <div className="banner__main">
-          <p className="banner__label">Résumé</p>
-          <h3>Download my CV (PDF)</h3>
-        </div>
-        <span className="banner__go">
-          <Icon name="arrow" size={18} />
-        </span>
-      </a>
+      <div className="tabs" role="tablist" aria-label="Project type">
+        {BUILD_TABS.map((t) => (
+          <button
+            key={t.id}
+            role="tab"
+            aria-selected={tab === t.id}
+            className={`tab ${tab === t.id ? 'is-active' : ''}`}
+            onClick={() => setTab(t.id)}
+          >
+            <span>{t.label}</span>
+          </button>
+        ))}
+        <span className="tabs__hint">← → switch</span>
+      </div>
+      <Rows rows={buildRows(tab)} />
     </>
   )
 }
 
-const BODIES = { about: About, career: Career, projects: Projects, websites: Websites, skills: Skills, contact: Contact }
+const BODIES = {
+  career: () => <Rows rows={careerRows()} />,
+  build: BuildBody,
+  skills: () => <Rows rows={skillRows()} />,
+  about: () => (
+    <>
+      <div className="intro-panel">
+        {profile.summary.map((p, i) => (
+          <p key={i}>{p}</p>
+        ))}
+      </div>
+      <Rows rows={aboutRows()} />
+    </>
+  ),
+  links: () => (
+    <>
+      <p className="lead">
+        Open to full-time roles, internships and freelance work in AI, data and web. WhatsApp or a call is the
+        fastest way to reach me.
+      </p>
+      <Rows rows={linkRows()} />
+    </>
+  ),
+  credits: () => <Rows rows={creditRows()} />,
+}
 
-export function Page({ id, onBack, theme, onToggleTheme }) {
+export function Page({ id, onBack }) {
   const page = PAGES.find((p) => p.id === id)
   const Body = BODIES[id]
-  const Art = ART[page.art]
   return (
     <div className="page">
-      <TopBar theme={theme} onToggleTheme={onToggleTheme}>
-        <button className="back" onClick={onBack}>
-          <Icon name="arrow" size={16} />
-          <span>Back</span>
-          <kbd>Esc</kbd>
-        </button>
-      </TopBar>
-
-      <div className="page__grid">
-        <div className="page__main">
-          <h1 className="page__title" data-text={page.label}>
-            {page.label}
-          </h1>
-          <div className="page__body">
-            <Body />
-          </div>
+      <Collage />
+      <div className="page__main">
+        <div className="page__head">
+          <button className="back" onClick={onBack}>
+            <Icon name="arrow" size={16} />
+            <span>Back</span>
+          </button>
+          <h1 className="page__title">{page.label}</h1>
         </div>
-        <aside className="page__art">
-          <figure className="frame frame--side">
-            <div className="frame__inner">
-              <Art />
-            </div>
-          </figure>
-        </aside>
+        <Body />
       </div>
-
-      <footer className="page__foot">
-        © {new Date().getFullYear()} {profile.name}
-      </footer>
     </div>
   )
 }

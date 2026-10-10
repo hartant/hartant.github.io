@@ -1,3 +1,5 @@
+import { useId } from 'react'
+
 // Original artwork drawn in SVG (no third-party images).
 // Colors come from CSS variables, so the art follows light/dark mode.
 
@@ -106,46 +108,87 @@ function Figure() {
   )
 }
 
-// Front image: mosaic + character in a slanted frame.
-export function HeroArt() {
+// Main menu: the character on its own, cut out over the sky.
+export function HeroCutout() {
   return (
-    <svg className="art" viewBox="0 0 400 520" role="img" aria-label="Illustration of a spiky-haired character with gold eyes">
-      <defs>
-        <radialGradient id="eyeGlow" cx="50%" cy="50%" r="50%">
-          <stop offset="0" stopColor="var(--eye-1)" />
-          <stop offset="1" stopColor="var(--eye-2)" />
-        </radialGradient>
-      </defs>
+    <svg className="art art--cutout" viewBox="40 30 330 490" role="img" aria-label="Illustration of a spiky-haired character with gold eyes">
+      <Figure />
+    </svg>
+  )
+}
+
+// Mosaic + character, used as a collage panel.
+export function HeroArt({ viewBox = '0 0 400 520' }) {
+  return (
+    <svg className="art" viewBox={viewBox} aria-hidden="true">
       <Mosaic />
       <Figure />
     </svg>
   )
 }
 
-// Close-up: zoom on the eyes and the mark.
-export function CloseUpArt() {
+// Close-up side profile: blue-tinted face, gold eye, red </> mark on the neck,
+// with a canvas-like grain.
+export function ProfileArt({ viewBox = '0 0 400 300' }) {
+  const id = useId().replace(/:/g, '')
   return (
-    <svg className="art" viewBox="110 200 240 320" role="img" aria-label="Close-up of the character's gold eyes">
+    <svg className="art" viewBox={viewBox} aria-hidden="true">
       <defs>
-        <radialGradient id="eyeGlow2" cx="50%" cy="50%" r="50%">
-          <stop offset="0" stopColor="var(--eye-1)" />
-          <stop offset="1" stopColor="var(--eye-2)" />
-        </radialGradient>
+        <filter id={`grain${id}`} x="0" y="0" width="100%" height="100%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch" />
+          <feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.16 0" />
+        </filter>
+        <linearGradient id={`skin${id}`} x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="var(--p-skin-1)" />
+          <stop offset="1" stopColor="var(--p-skin-2)" />
+        </linearGradient>
       </defs>
-      <Mosaic />
-      <Figure />
+      <rect width="400" height="300" className="p-bg" />
+      {/* face, profile edge on the left: brow, nose, lips, chin */}
+      <path
+        fill={`url(#skin${id})`}
+        d="M40 0 L400 0 L400 300 L96 300 L124 252 L150 238 L168 218 L160 207 L176 193 L166 178 L136 152 L112 122 Z"
+      />
+      {/* neck below the jawline */}
+      <path className="p-neck" d="M150 240 Q232 204 304 118 L352 150 L322 300 L170 300 Z" />
+      <path className="p-line" d="M150 240 Q232 204 304 118" />
+      {/* cheek light */}
+      <path className="p-light" d="M126 150 Q160 160 200 150 Q170 182 140 172 Z" />
+      {/* deep shadow on the right */}
+      <path className="p-shadow" d="M336 0 L400 0 L400 300 L312 300 Q372 196 336 0 Z" />
+      {/* hair */}
+      <path
+        className="p-hair"
+        d="M0 0 L340 0 L306 34 L328 64 L276 52 L256 96 L234 58 L206 104 L194 62 L164 108 L152 72 L128 104 L110 82 L76 98 L58 80 L30 108 L0 96 Z"
+      />
+      <path className="p-strand" d="M300 10 L250 80 M240 20 L200 92 M180 14 L160 96 M120 18 L112 90 M70 22 L60 76" />
+      {/* eye */}
+      <path className="p-eye-white" d="M60 128 Q92 102 134 120 Q102 144 60 128 Z" />
+      <circle className="p-iris" cx="102" cy="123" r="11" />
+      <circle className="p-pupil" cx="104" cy="123" r="4" />
+      <circle className="p-glint" cx="98" cy="119" r="2.5" />
+      <path className="p-lid" d="M56 127 Q92 98 138 118" />
+      {/* coat collar, bottom left */}
+      <path className="p-coat" d="M0 300 L0 172 L62 204 L134 262 L206 300 Z" />
+      <path className="p-collar" d="M0 172 L62 204 L134 262 L206 300" />
+      {/* mark: a diamond with code brackets */}
+      <g className="p-mark">
+        <path d="M300 176 L328 214 L300 252 L272 214 Z" />
+        <path d="M292 204 L283 214 L292 224 M308 204 L317 214 L308 224 M303 200 L297 228" />
+      </g>
+      <rect width="400" height="300" filter={`url(#grain${id})`} />
     </svg>
   )
 }
 
 // Night scene: big moon over a city skyline.
-export function MoonArt() {
+export function MoonArt({ viewBox = '0 0 400 520' }) {
   const towers = [
     [0, 380, 46], [40, 330, 30], [66, 360, 52], [112, 300, 26], [134, 350, 40],
     [170, 250, 34], [200, 330, 48], [244, 290, 30], [270, 345, 56], [322, 310, 34], [352, 360, 48],
   ]
   return (
-    <svg className="art" viewBox="0 0 400 520" role="img" aria-label="Illustration of a large moon over a city at night">
+    <svg className="art" viewBox={viewBox} aria-hidden="true">
       <rect width="400" height="520" className="moon__sky" />
       <circle cx="250" cy="170" r="120" className="moon__halo" />
       <circle cx="250" cy="170" r="92" className="moon__disc" />
@@ -162,11 +205,49 @@ export function MoonArt() {
           )}
         </g>
       ))}
-      {/* the tallest tower with a spire */}
       <path d="M170 250 L187 196 L204 250 Z" className="moon__tower" />
       <path d="M0 470 C80 455 160 485 240 468 S360 470 400 462 L400 520 L0 520 Z" className="moon__water" />
     </svg>
   )
 }
 
-export const ART = { hero: HeroArt, close: CloseUpArt, moon: MoonArt }
+// Small square crops used as row avatars.
+const THUMBS = [
+  () => <HeroArt viewBox="130 220 140 140" />,
+  () => <ProfileArt viewBox="40 80 140 140" />,
+  () => <MoonArt viewBox="160 80 180 180" />,
+  () => <ProfileArt viewBox="250 160 100 100" />,
+  () => <HeroArt viewBox="60 40 300 300" />,
+]
+
+export function Thumb({ index = 0 }) {
+  const T = THUMBS[index % THUMBS.length]
+  return (
+    <span className="thumb" aria-hidden="true">
+      <T />
+    </span>
+  )
+}
+
+// Tilted collage of panels on the right side of inner pages.
+export function Collage() {
+  return (
+    <div className="collage" aria-hidden="true">
+      <div className="panel panel--a">
+        <ProfileArt />
+      </div>
+      <div className="panel panel--b">
+        <HeroArt viewBox="110 200 200 160" />
+      </div>
+      <div className="panel panel--c">
+        <MoonArt viewBox="60 40 340 300" />
+      </div>
+      <div className="panel panel--d">
+        <HeroArt viewBox="0 0 400 260" />
+      </div>
+      <div className="panel panel--e">
+        <ProfileArt viewBox="230 140 160 130" />
+      </div>
+    </div>
+  )
+}

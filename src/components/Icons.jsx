@@ -36,6 +36,22 @@ const paths = {
       <path d="M9 10a.5.5 0 0 0 1 0V9a.5.5 0 0 0-1 0v1a5 5 0 0 0 5 5h1a.5.5 0 0 0 0-1h-1a.5.5 0 0 0 0 1" />
     </>
   ),
+  play: <path d="M7 4l13 8-13 8z" fill="currentColor" />,
+  pause: <path d="M7 4h3v16H7zM14 4h3v16h-3z" fill="currentColor" />,
+  prev: <path d="M19 5L9 12l10 7zM6 5v14" fill="currentColor" />,
+  next: <path d="M5 5l10 7-10 7zM18 5v14" fill="currentColor" />,
+  volume: (
+    <>
+      <path d="M11 5L6 9H3v6h3l5 4z" fill="currentColor" />
+      <path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13" />
+    </>
+  ),
+  mute: (
+    <>
+      <path d="M11 5L6 9H3v6h3l5 4z" fill="currentColor" />
+      <path d="M22 9l-6 6M16 9l6 6" />
+    </>
+  ),
   twitter: <path d="M4 4l16 16M20 4 4 20" />,
   instagram: (
     <>
