@@ -3,6 +3,7 @@ import Start from './components/Start.jsx'
 import Menu from './components/Menu.jsx'
 import Player from './components/Player.jsx'
 import TopBar from './components/TopBar.jsx'
+import Chat from './components/Chat.jsx'
 import { PAGES, Page } from './components/Pages.jsx'
 import { playlist } from './audio/playlist.js'
 
@@ -35,6 +36,7 @@ export default function App() {
   const [route, setRoute] = useState(routeFromHash)
   const [selected, setSelected] = useState(0)
   const [wipe, setWipe] = useState(false)
+  const [chatOpen, setChatOpen] = useState(false)
   // index.html sets the starting theme before React loads (no flash).
   const [theme, setTheme] = useState(() =>
     document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light'
@@ -92,7 +94,7 @@ export default function App() {
     if (!started) return
     const onKey = (e) => {
       if (e.altKey || e.ctrlKey || e.metaKey) return
-      if (e.target.matches?.('input')) return
+      if (e.target.closest?.('input, textarea, .chat')) return
       if (route === 'home') {
         if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
           e.preventDefault()
@@ -121,7 +123,13 @@ export default function App() {
         <Start musicOn={musicOn} onToggleMusic={toggleMusicPref} onContinue={begin} />
       ) : (
         <>
-          <TopBar theme={theme} onToggleTheme={toggleTheme} />
+          <TopBar
+            theme={theme}
+            onToggleTheme={toggleTheme}
+            onChat={() => setChatOpen((o) => !o)}
+            chatOpen={chatOpen}
+          />
+          <Chat open={chatOpen} onClose={() => setChatOpen(false)} onRoute={go} />
           {route === 'home' ? (
             <Menu selected={selected} onSelect={setSelected} onOpen={go} />
           ) : (

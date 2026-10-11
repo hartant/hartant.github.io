@@ -1,11 +1,22 @@
 import Icon from './Icons.jsx'
 import { profile } from '../data.js'
 
-export default function TopBar({ theme, onToggleTheme, children }) {
+export default function TopBar({ theme, onToggleTheme, onChat, chatOpen, children }) {
   return (
     <header className="topbar">
       {children}
       <div className="topbar__actions">
+        {onChat && (
+          <button
+            className={`chip-btn chip-btn--ask ${chatOpen ? 'is-on' : ''}`}
+            onClick={onChat}
+            aria-expanded={chatOpen}
+            aria-label="Ask questions about Mohammed"
+          >
+            <Icon name="chat" size={15} />
+            <span>Ask</span>
+          </button>
+        )}
         <button
           className="chip-btn"
           onClick={onToggleTheme}

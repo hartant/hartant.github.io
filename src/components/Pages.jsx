@@ -174,6 +174,7 @@ function Rows({ rows }) {
   useEffect(() => {
     const onKey = (e) => {
       if (e.altKey || e.ctrlKey || e.metaKey) return
+      if (e.target.closest?.('input, textarea, .chat')) return
       if (e.key === 'ArrowDown') {
         e.preventDefault()
         setSel((s) => Math.min(s + 1, rows.length - 1))
@@ -264,6 +265,7 @@ function BuildBody() {
 
   useEffect(() => {
     const onKey = (e) => {
+      if (e.target.closest?.('input, textarea, .chat')) return
       const i = BUILD_TABS.findIndex((t) => t.id === tab)
       if (e.key === 'ArrowRight') setTab(BUILD_TABS[(i + 1) % BUILD_TABS.length].id)
       if (e.key === 'ArrowLeft') setTab(BUILD_TABS[(i - 1 + BUILD_TABS.length) % BUILD_TABS.length].id)
