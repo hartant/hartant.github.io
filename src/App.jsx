@@ -3,7 +3,7 @@ import Start from './components/Start.jsx'
 import Menu from './components/Menu.jsx'
 import Player from './components/Player.jsx'
 import TopBar from './components/TopBar.jsx'
-import Chat from './components/Chat.jsx'
+import Chat, { CatLauncher } from './components/Chat.jsx'
 import { PAGES, Page } from './components/Pages.jsx'
 import { playlist } from './audio/playlist.js'
 
@@ -37,6 +37,7 @@ export default function App() {
   const [selected, setSelected] = useState(0)
   const [wipe, setWipe] = useState(false)
   const [chatOpen, setChatOpen] = useState(false)
+  const [catBubble, setCatBubble] = useState(false)
   // index.html sets the starting theme before React loads (no flash).
   const [theme, setTheme] = useState(() =>
     document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light'
@@ -67,7 +68,39 @@ export default function App() {
   const begin = useCallback(() => {
     setStarted(true)
     if (musicOn) playlist.play()
+    // Kuro wakes up: on computers the chat opens by itself, on phones the cat
+    // just says hello (a full-screen chat popping open would be too much).
+    // Once a visitor hides it, it stays tucked away for the rest of the visit.
+    let dismissed = false
+    try {
+      dismissed = sessionStorage.getItem('chatHidden') === '1'
+    } catch {
+      /* storage unavailable */
+    }
+    if (dismissed) return
+    setTimeout(() => {
+      if (window.matchMedia('(max-width: 760px)').matches) {
+        setCatBubble(true)
+        setTimeout(() => setCatBubble(false), 9000)
+      } else {
+        setChatOpen(true)
+      }
+    }, 1100)
   }, [musicOn])
+
+  const hideChat = () => {
+    setChatOpen(false)
+    try {
+      sessionStorage.setItem('chatHidden', '1')
+    } catch {
+      /* storage unavailable */
+    }
+  }
+
+  const openChat = () => {
+    setCatBubble(false)
+    setChatOpen(true)
+  }
 
   const toggleMusicPref = () => {
     const next = !musicOn
@@ -123,13 +156,9 @@ export default function App() {
         <Start musicOn={musicOn} onToggleMusic={toggleMusicPref} onContinue={begin} />
       ) : (
         <>
-          <TopBar
-            theme={theme}
-            onToggleTheme={toggleTheme}
-            onChat={() => setChatOpen((o) => !o)}
-            chatOpen={chatOpen}
-          />
-          <Chat open={chatOpen} onClose={() => setChatOpen(false)} onRoute={go} />
+          <TopBar theme={theme} onToggleTheme={toggleTheme} />
+          <Chat open={chatOpen} onClose={hideChat} onRoute={go} />
+          {!chatOpen && <CatLauncher onOpen={openChat} bubble={catBubble} onDismissBubble={() => setCatBubble(false)} />}
           {route === 'home' ? (
             <Menu selected={selected} onSelect={setSelected} onOpen={go} />
           ) : (

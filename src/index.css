@@ -1142,6 +1142,223 @@ button {
   cursor: default;
 }
 
+/* ---------- Kuro, the chat cat ---------- */
+.cat {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.cat__black {
+  fill: #0b0b14;
+}
+
+.cat__tail {
+  fill: none;
+  stroke: #0b0b14;
+  stroke-width: 5;
+  stroke-linecap: round;
+  transform-origin: 43px 54px;
+  animation: cat-tail 2.4s ease-in-out infinite alternate;
+}
+
+.cat__ear-in {
+  fill: #ff7aa2;
+  opacity: 0.85;
+}
+
+.cat__eye {
+  fill: var(--gold);
+}
+
+.cat__pupil {
+  fill: #0b0b14;
+}
+
+.cat__eyes {
+  transform-origin: 32px 25px;
+  animation: cat-blink 4.2s infinite;
+}
+
+.cat__nose {
+  fill: #ff7aa2;
+}
+
+.cat__whisker {
+  stroke: rgba(255, 255, 255, 0.55);
+  stroke-width: 0.8;
+  stroke-linecap: round;
+}
+
+.cat__collar {
+  fill: none;
+  stroke: var(--red);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+.cat__bell {
+  fill: var(--gold);
+  stroke: #b8860b;
+  stroke-width: 0.6;
+}
+
+.cat__head {
+  transform-origin: 32px 32px;
+  transition: transform 0.25s ease;
+}
+
+.cat__ear--l {
+  transform-origin: 22px 20px;
+  animation: cat-ear 7s infinite;
+}
+
+@keyframes cat-tail {
+  from {
+    transform: rotate(-14deg);
+  }
+  to {
+    transform: rotate(16deg);
+  }
+}
+
+@keyframes cat-blink {
+  0%,
+  90%,
+  100% {
+    transform: scaleY(1);
+  }
+  94% {
+    transform: scaleY(0.08);
+  }
+}
+
+@keyframes cat-ear {
+  0%,
+  86%,
+  100% {
+    transform: rotate(0);
+  }
+  89% {
+    transform: rotate(-14deg);
+  }
+  92% {
+    transform: rotate(4deg);
+  }
+}
+
+.cat-launch {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 34;
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.cat-btn {
+  position: relative;
+  width: 68px;
+  height: 68px;
+  padding: 8px 8px 4px;
+  border-radius: 50%;
+  background: var(--white);
+  box-shadow: 0 0 0 3px var(--red), 0 12px 28px rgba(0, 0, 30, 0.4);
+  animation: cat-in 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both, cat-bob 3s ease-in-out 0.4s infinite;
+  transition: transform 0.2s;
+}
+
+.cat-btn:hover {
+  transform: scale(1.08);
+}
+
+.cat-btn:hover .cat__head {
+  transform: rotate(-10deg);
+}
+
+@keyframes cat-in {
+  from {
+    transform: scale(0.4) translateY(20px);
+    opacity: 0;
+  }
+}
+
+@keyframes cat-bob {
+  50% {
+    translate: 0 -3px;
+  }
+}
+
+.cat-bubble {
+  position: relative;
+  margin-bottom: 18px;
+  padding: 10px 30px 10px 14px;
+  background: var(--white);
+  color: var(--ink);
+  font-weight: 800;
+  font-style: italic;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  box-shadow: 0 10px 24px rgba(0, 0, 30, 0.3);
+  animation: bubble-in 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.cat-bubble::after {
+  content: '';
+  position: absolute;
+  right: -8px;
+  bottom: 10px;
+  border: 8px solid transparent;
+  border-left-color: var(--white);
+  border-right: 0;
+}
+
+.cat-bubble__x {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  color: var(--muted);
+}
+
+@keyframes bubble-in {
+  from {
+    opacity: 0;
+    transform: translateX(12px) scale(0.9);
+  }
+}
+
+/* Cat in the chat header */
+.chat__avatar {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  padding: 5px 5px 2px;
+  border-radius: 50%;
+  background: var(--white);
+  box-shadow: 0 0 0 2px var(--red);
+}
+
+.chat__online {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 4px;
+  border-radius: 50%;
+  background: #2fe08a;
+  vertical-align: 1px;
+}
+
+/* Keep the home socials clear of the cat */
+.home__socials {
+  right: 108px;
+}
+
 /* ============================================================
    Inner pages
    ============================================================ */
@@ -1738,6 +1955,18 @@ button {
   .topbar {
     top: 14px;
     right: 12px;
+  }
+  .cat-launch {
+    right: 12px;
+    bottom: calc(var(--player-h, 0px) + 12px);
+  }
+  .cat-btn {
+    width: 58px;
+    height: 58px;
+  }
+  .cat-bubble {
+    white-space: normal;
+    max-width: 200px;
   }
   .chat {
     top: 60px;

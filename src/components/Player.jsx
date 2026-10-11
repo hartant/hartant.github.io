@@ -69,6 +69,19 @@ export default function Player({ onChange }) {
 
   useEffect(() => writeJSON('playerMode', mode), [mode])
 
+  // On phones the player is a bar along the bottom; share its height so the
+  // chat cat can sit just above it.
+  useEffect(() => {
+    const el = boxRef.current
+    const root = document.documentElement
+    const update = () =>
+      root.style.setProperty('--player-h', mobile && mode !== 'hidden' && el ? `${el.offsetHeight}px` : '0px')
+    update()
+    const ro = 'ResizeObserver' in window ? new ResizeObserver(update) : null
+    if (ro && el) ro.observe(el)
+    return () => ro?.disconnect()
+  }, [mobile, mode])
+
   // Animate the visualizer and the clock while playing.
   useEffect(() => {
     let raf
