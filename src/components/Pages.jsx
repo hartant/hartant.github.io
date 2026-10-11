@@ -22,7 +22,7 @@ export const PAGES = [
   { id: 'skills', label: 'Skills', note: `${skillCount} tools & languages` },
   { id: 'about', label: 'About', note: '1337 · UM6P · Casablanca' },
   { id: 'links', label: 'Links', note: 'Phone · WhatsApp · LinkedIn' },
-  { id: 'credits', label: 'Credits', note: 'Code, music & fonts' },
+  { id: 'credits', label: 'Credits', note: 'Code & fonts' },
 ]
 
 /* ---------- Row data for each page ---------- */
@@ -159,7 +159,6 @@ function linkRows() {
 function creditRows() {
   return [
     { key: 'code', icon: 'code', title: 'Design & code', sub: `${profile.name} · React + Vite`, side: '' },
-    { key: 'music', icon: 'volume', title: 'Music', sub: 'Original, 3 tracks generated live with the Web Audio API', side: '' },
     { key: 'fonts', icon: 'globe', title: 'Fonts', sub: 'Archivo & Geist Mono', side: '' },
   ]
 }

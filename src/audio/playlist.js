@@ -1,5 +1,4 @@
-// One playlist for the player: embedded YouTube songs first, then the
-// original synthesized tracks. YouTube audio streams from YouTube's own
+// One playlist for the player: the embedded YouTube songs. YouTube audio streams from YouTube's own
 // embedded player (nothing is downloaded).
 import { music, TRACKS as SYNTH } from './music.js'
 
@@ -10,10 +9,10 @@ export const YOUTUBE_SONGS = [
   { id: 'AnKTcOx9kZE', title: 'Accettami' },
 ]
 
-const ITEMS = [
-  ...YOUTUBE_SONGS.map((s) => ({ kind: 'yt', ...s })),
-  ...SYNTH.map((t, i) => ({ kind: 'synth', index: i, title: t.title })),
-]
+// Only the YouTube songs are in the playlist. The synth engine (music.js) is
+// kept as a fallback: add `...SYNTH.map((t, i) => ({ kind: 'synth', index: i, title: t.title }))`
+// to bring those tracks back.
+const ITEMS = YOUTUBE_SONGS.map((s) => ({ kind: 'yt', ...s }))
 
 export const YT_ELEMENT_ID = 'yt-player'
 
