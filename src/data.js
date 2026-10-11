@@ -6,7 +6,7 @@
 export const profile = {
   name: 'Mohammed Benamar',
   firstName: 'Mohammed',
-  role: 'Full-Stack / Software Engineer',
+  role: 'AI / ML Engineer',
   location: 'Casablanca-Settat, Morocco',
   email: 'simoben3502@gmail.com',
   cv: 'CV_Mohammed_Benamar.pdf', // file inside /public
@@ -14,7 +14,7 @@ export const profile = {
   tagline:
     'I build data pipelines, AI systems and web apps — turning messy, unstructured data into something clean and usable.',
   summary: [
-    'Full-stack software engineer with a strong focus on Python and data. I build pipelines that pull structured information out of messy sources and turn it into something usable — HTML parsing, regex-based extraction, REST APIs and JSON data.',
+    'AI/ML engineer with a strong focus on Python and data. I build pipelines that pull structured information out of messy sources and turn it into something usable — HTML parsing, regex-based extraction, REST APIs and JSON data.',
     'I trained at 1337 (42 Network – UM6P), and I have hands-on experience with LLM-powered systems such as Retrieval-Augmented Generation and natural-language function calling. I pick up new tools quickly, and I ship what I build: solo, end to end, from back-end logic to front-end interfaces.',
   ],
 }

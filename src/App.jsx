@@ -4,7 +4,7 @@ import Menu from './components/Menu.jsx'
 import Player from './components/Player.jsx'
 import TopBar from './components/TopBar.jsx'
 import { PAGES, Page } from './components/Pages.jsx'
-import { music } from './audio/music.js'
+import { playlist } from './audio/playlist.js'
 
 function routeFromHash() {
   const id = window.location.hash.replace(/^#\/?/, '')
@@ -64,7 +64,7 @@ export default function App() {
 
   const begin = useCallback(() => {
     setStarted(true)
-    if (musicOn) music.play()
+    if (musicOn) playlist.play()
   }, [musicOn])
 
   const toggleMusicPref = () => {
