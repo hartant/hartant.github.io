@@ -52,6 +52,15 @@ const paths = {
       <path d="M22 9l-6 6M16 9l6 6" />
     </>
   ),
+  minus: <path d="M5 12h14" />,
+  expand: <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />,
+  music: (
+    <>
+      <path d="M9 18V5l12-2v13" />
+      <circle cx="6" cy="18" r="3" fill="currentColor" />
+      <circle cx="18" cy="16" r="3" fill="currentColor" />
+    </>
+  ),
   twitter: <path d="M4 4l16 16M20 4 4 20" />,
   instagram: (
     <>
