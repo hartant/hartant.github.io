@@ -10,6 +10,8 @@ import {
   skills,
   education,
   languages,
+  highlights,
+  softSkills,
 } from '../data.js'
 
 const skillCount = skills.reduce((n, g) => n + g.items.length, 0)
@@ -20,7 +22,7 @@ export const PAGES = [
   { id: 'career', label: 'Career', note: `${experience.length} roles · AI & web` },
   { id: 'build', label: 'Build', note: `${projects.length} projects · ${websites.length} live sites` },
   { id: 'skills', label: 'Skills', note: `${skillCount} tools & languages` },
-  { id: 'about', label: 'About', note: '1337 · UM6P · Casablanca' },
+  { id: 'about', label: 'About', note: 'Profile · 82% Recall@5 · 1337' },
   { id: 'links', label: 'Links', note: 'Phone · WhatsApp · LinkedIn' },
   { id: 'credits', label: 'Credits', note: 'Code & fonts' },
 ]
@@ -71,11 +73,18 @@ function buildRows(tab) {
       key: p.title,
       thumb: i + 1,
       title: p.title,
-      sub: p.tech.slice(0, 3).join(' · '),
+      sub: p.subtitle || p.tech.slice(0, 3).join(' · '),
       side: p.links.live ? 'Live' : p.links.github ? 'Code' : '',
       href: p.links.live || p.links.github,
       details: (
         <>
+          {p.highlights?.length > 0 && (
+            <p className="badges">
+              {p.highlights.map((h) => (
+                <span key={h}>{h}</span>
+              ))}
+            </p>
+          )}
           <p className="desc">{p.description}</p>
           <p className="tech">{p.tech.join(' / ')}</p>
           <p className="row__links">
@@ -96,6 +105,25 @@ function buildRows(tab) {
 }
 
 function skillRows() {
+  const soft = {
+    key: 'soft',
+    thumb: skills.length + 2,
+    title: 'Soft skills',
+    sub: `${softSkills.length} strengths`,
+    side: '',
+    open: true,
+    details: (
+      <p className="chips chips--soft">
+        {softSkills.map((s) => (
+          <span key={s}>{s}</span>
+        ))}
+      </p>
+    ),
+  }
+  return [...skillRowsTech(), soft]
+}
+
+function skillRowsTech() {
   return skills.map((g, i) => ({
     key: g.group,
     thumb: i + 2,
@@ -301,6 +329,14 @@ const BODIES = {
   skills: () => <Rows rows={skillRows()} />,
   about: () => (
     <>
+      <ul className="numbers" aria-label="Key results">
+        {highlights.map((h) => (
+          <li key={h.label}>
+            <strong>{h.value}</strong>
+            <span>{h.label}</span>
+          </li>
+        ))}
+      </ul>
       <div className="intro-panel">
         {profile.summary.map((p, i) => (
           <p key={i}>{p}</p>

@@ -160,7 +160,7 @@ export default function Player({ onChange }) {
       <div
         ref={boxRef}
         style={style}
-        className={`player player--${mode} ${st.kind === 'yt' ? 'player--video' : ''}`}
+        className={`player player--${mode} ${st.kind === 'yt' && st.playing ? 'player--video' : ''}`}
         role="region"
         aria-label="Music player"
         aria-hidden={mode === 'hidden'}
@@ -189,7 +189,8 @@ export default function Player({ onChange }) {
           </button>
         </div>
 
-        {/* YouTube's player lives here; kept mounted so it survives track and size changes */}
+        {/* YouTube's player lives here; kept mounted so it survives track and size
+            changes, and only shown (as YouTube requires) while a song plays */}
         <div className="player__video" aria-hidden={st.kind !== 'yt'}>
           <div id={YT_ELEMENT_ID} />
         </div>

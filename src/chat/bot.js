@@ -1,7 +1,7 @@
 // Kuro, the site's chat cat. It runs in the browser and answers questions
 // about Mohammed from data.js: specific names first (projects, sites, tech),
 // then keyword intents, then a retrieval step over all the facts.
-import { profile, contacts, experience, projects, websites, skills, education, languages } from '../data.js'
+import { profile, contacts, experience, projects, websites, skills, education, languages, highlights, softSkills } from '../data.js'
 
 export const BOT_NAME = 'Kuro'
 
@@ -54,6 +54,7 @@ export const SUGGESTIONS = [
 ]
 
 const MORE = [
+  { label: 'His best results', ask: 'What results has he achieved?' },
   { label: 'Why hire him?', ask: 'Why should I hire him?' },
   { label: 'His AI work', ask: 'What AI work has he done?' },
   { label: 'What can he build for me?', ask: 'What can he build for me?' },
@@ -88,6 +89,8 @@ const INTENTS = [
   { id: 'remote', words: ['remote', 'relocate', 'relocation', 'onsite', 'on site', 'hybrid', 'travel', 'teletravail', 'distance', 'demenager'] },
   { id: 'response', words: ['reply', 'respond', 'response', 'quickly', 'hours', 'timezone', 'time zone', 'repond', 'rapide'] },
   { id: 'what1337', words: ['what is 1337', 'what s 1337', 'c est quoi 1337', 'quoi 1337', '42 network', 'what is 42', 'chno hiya 1337'] },
+  { id: 'results', words: ['result', 'metric', 'number', 'recall', 'accuracy', 'performance', 'benchmark', 'score', 'impact', 'achievement', 'resultat', 'performance', 'chiffre'] },
+  { id: 'soft', words: ['soft skill', 'soft skills', 'teamwork', 'team', 'personality', 'quality', 'qualities', 'communication', 'collaborat', 'learner', 'qualite', 'equipe', 'savoir etre'] },
   { id: 'ai', words: ['ai', 'ia', 'ml', 'machine learning', 'deep learning', 'llm', 'gpt', 'model', 'neural', 'artificial', 'intelligence', 'data science', 'nlp'] },
   { id: 'strengths', words: ['why', 'hire', 'strength', 'strong', 'best', 'good at', 'stand out', 'value', 'pourquoi', 'force', 'atout', 'avantage', '3lach', 'alach'] },
   { id: 'services', words: ['service', 'offer', 'for me', 'help me', 'can he build', 'can he do', 'business', 'startup', 'propose', 'aider', 'faire pour'] },
@@ -227,11 +230,25 @@ const A = {
     text: `That depends on the role or the project. The best is to talk about it directly with ${first}: he's flexible and happy to discuss.`,
     actions: CONTACT_ACTIONS,
   }),
+  results: () => ({
+    text: `${first}'s key results:\n\n${list(highlights.map((h) => `**${h.value}** ${h.label}`))}\n\n${projects
+      .filter((p) => p.highlights?.length)
+      .map((p) => `**${p.title}**: ${p.highlights.join(' · ')}`)
+      .join('\n')}`,
+    actions: [{ label: 'See projects', route: 'build' }, { label: 'Tell me about RAG', ask: 'Tell me about RAG' }],
+  }),
+  soft: () => ({
+    text: `${first}'s soft skills:\n\n${list(softSkills.map((x) => `**${x}**`))}\n\nAt 1337 there are no teachers: every project is reviewed by other students, so peer review and teamwork are part of daily work.`,
+    actions: followUps([]),
+  }),
   strengths: () => ({
     text: `Why ${first}? 🐾\n\n${list(
       [
         '**Ships end to end**: from data pipelines and LLM tools to the web interface.',
-        `**Real AI work**: ${aiProjects.map((p) => p.title).join(', ')}.`,
+        `**Real AI work with measured results**: ${highlights
+          .slice(0, 3)
+          .map((h) => `${h.value} ${h.label}`)
+          .join(', ')}.`,
         experience[0] ? `**Industry experience**: ${experience[0].role} at ${experience[0].company}.` : null,
         '**Trained at 1337 (42 Network)**: project-based, autonomous, learns new tools fast.',
         '**Freelance since 2024**: used to working directly with clients.',
@@ -272,7 +289,9 @@ function projectAnswer(p) {
   const actions = []
   if (p.links.live) actions.push({ label: 'Open live', href: p.links.live })
   if (p.links.github) actions.push({ label: 'See the code', href: p.links.github })
-  return { text: `**${p.title}**\n\n${p.description}\n\n**Tech:** ${p.tech.join(', ')}`, actions }
+  const head = p.subtitle ? `**${p.title}**: ${p.subtitle}` : `**${p.title}**`
+  const results = p.highlights?.length ? `\n\n**Results:** ${p.highlights.join(' · ')}` : ''
+  return { text: `${head}\n\n${p.description}${results}\n\n**Tech:** ${p.tech.join(', ')}`, actions }
 }
 
 function websiteAnswer(w) {
@@ -315,7 +334,7 @@ const DOCS = [
       answer: () => ({ text: `From his role as **${j.role}** at ${j.company}:\n\n${pt}`, actions: [{ label: 'Career page', route: 'career' }] }),
     }))
   ),
-  ...projects.map((p) => ({ text: `${p.title} ${p.description} ${p.tech.join(' ')}`, answer: () => projectAnswer(p) })),
+  ...projects.map((p) => ({ text: `${p.title} ${p.subtitle || ''} ${p.description} ${p.tech.join(' ')} ${(p.highlights || []).join(' ')}`, answer: () => projectAnswer(p) })),
   ...skills.map((g) => ({
     text: `${g.group} ${g.items.join(' ')}`,
     answer: () => ({ text: `**${g.group}:** ${g.items.join(', ')}`, actions: [{ label: 'Skills page', route: 'skills' }] }),
@@ -379,7 +398,7 @@ export function reply(question) {
 
   // A specific technology ("does he know TensorFlow?"), unless the question is
   // clearly about something else.
-  const SKIP_TECH = ['contact', 'cv', 'langs', 'location', 'bot', 'site', 'joke', 'salary', 'what1337', 'school', 'services', 'strengths']
+  const SKIP_TECH = ['results', 'soft', 'contact', 'cv', 'langs', 'location', 'bot', 'site', 'joke', 'salary', 'what1337', 'school', 'services', 'strengths']
   if (!SKIP_TECH.includes(bestId)) {
     for (const [key, t] of TECH) {
       if (q.includes(key)) return techAnswer(t)

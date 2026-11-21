@@ -1673,6 +1673,65 @@ button {
   font-size: 0.82rem;
 }
 
+/* Result badges on projects */
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.badges span {
+  padding: 3px 12px;
+  background: var(--gold);
+  color: var(--ink);
+  font-weight: 900;
+  font-style: italic;
+  font-size: 0.75rem;
+  clip-path: polygon(6px 0, 100% 0, calc(100% - 6px) 100%, 0 100%);
+}
+
+.chips--soft span {
+  border-color: rgba(255, 46, 99, 0.45);
+  background: rgba(255, 46, 99, 0.12);
+  color: var(--white);
+}
+
+/* Big numbers on the About page */
+.numbers {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.numbers li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 14px 16px 12px;
+  background: var(--bar);
+  border-top: 3px solid var(--red);
+  animation: row-in 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.numbers li:nth-child(2) { animation-delay: 50ms; border-top-color: var(--gold); }
+.numbers li:nth-child(3) { animation-delay: 100ms; border-top-color: var(--cyan); }
+.numbers li:nth-child(4) { animation-delay: 150ms; border-top-color: var(--violet); }
+
+.numbers strong {
+  font-weight: 900;
+  font-style: italic;
+  font-size: clamp(1.4rem, 2.6vw, 2rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.numbers span {
+  font-size: 0.74rem;
+  color: var(--text-2);
+  line-height: 1.3;
+}
+
 /* Build tabs */
 .tabs {
   display: flex;
@@ -1991,6 +2050,9 @@ button {
   }
   .row__side {
     display: none;
+  }
+  .numbers {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .thumb {
     width: 52px;

@@ -6,16 +6,18 @@
 export const profile = {
   name: 'Mohammed Benamar',
   firstName: 'Mohammed',
-  role: 'AI / ML Engineer',
-  location: 'Casablanca-Settat, Morocco',
+  role: 'AI / ML Developer',
+  headline: 'AI / ML Developer · Python · LLM & Data',
+  location: 'Casablanca, Morocco',
+  website: 'https://hartant.github.io',
   email: 'simoben3502@gmail.com',
   cv: 'CV_Mohammed_Benamar.pdf', // file inside /public
   available: true, // shows the "Open to opportunities" badge
   tagline:
-    'I build data pipelines, AI systems and web apps — turning messy, unstructured data into something clean and usable.',
+    'I build working LLM systems end to end in Python: RAG, function calling and data pipelines that turn messy data into answers.',
   summary: [
-    'AI/ML engineer with a strong focus on Python and data. I build pipelines that pull structured information out of messy sources and turn it into something usable — HTML parsing, regex-based extraction, REST APIs and JSON data.',
-    'I trained at 1337 (42 Network – UM6P), and I have hands-on experience with LLM-powered systems such as Retrieval-Augmented Generation and natural-language function calling. I pick up new tools quickly, and I ship what I build: solo, end to end, from back-end logic to front-end interfaces.',
+    'AI/ML developer and software engineering student at 1337 (42 Network – UM6P). I build working LLM systems end to end in Python: a Retrieval-Augmented Generation (RAG) system that answers questions over a codebase of nearly 2,000 files, and a function-calling tool that guarantees valid JSON through constrained decoding.',
+    'I also have experience with data pipelines (ETL), machine learning for anomaly detection, and full-stack web development. I learn fast and ship prototypes that work, even under tight constraints.',
   ],
 }
 
@@ -36,6 +38,14 @@ export const contacts = [
   { label: 'Email', value: 'simoben3502@gmail.com', url: 'mailto:simoben3502@gmail.com', icon: 'mail' },
 ]
 
+// Key results, shown as big numbers on the About page.
+export const highlights = [
+  { value: '1,941', label: 'files indexed by the RAG system' },
+  { value: '82%', label: 'Recall@5 on documentation' },
+  { value: '100%', label: 'valid JSON from a 0.6B model' },
+  { value: '~25 s', label: 'to answer 200 questions' },
+]
+
 export const stats = [
   { value: '1337', label: '42 Network – UM6P' },
   { value: '2024', label: 'Freelancing since' },
@@ -50,10 +60,10 @@ export const experience = [
     location: 'Casablanca',
     period: 'Dec 2025 – Mar 2026',
     points: [
-      'Built a data pipeline for an industrial IoT + Machine Learning platform: ingested raw sensor data, cleaned and transformed it, and fed it into prediction and anomaly-detection models — an end-to-end ETL workflow.',
-      'Worked with real-time data caching and structured JSON outputs to keep the dashboard fast and reliable.',
+      'Built the data pipeline for an industrial IoT platform: ingested raw sensor data, cleaned and transformed it, and fed it into prediction and anomaly-detection models (end-to-end ETL).',
+      'Developed a real-time monitoring dashboard with email alerts and a what-if simulator, using data caching and structured JSON outputs.',
     ],
-    tags: ['Python', 'ETL', 'Machine Learning', 'IoT'],
+    tags: ['Python', 'ETL', 'Machine Learning', 'IoT', 'Next.js'],
   },
   {
     role: 'Freelance Web Developer',
@@ -61,8 +71,8 @@ export const experience = [
     location: 'Remote',
     period: '2024 – Present',
     points: [
-      'Built and integrated REST APIs and data-driven features into client websites, working directly with JSON data and HTML/DOM structures.',
-      "Worked independently across the full stack, learning new tools and libraries quickly to match each project's needs.",
+      'Built and integrated REST APIs and data-driven features into client websites (JSON, HTML/DOM).',
+      'Delivered complete projects on my own, from back end to front end, picking up new tools quickly.',
     ],
     tags: ['React', 'TypeScript', 'Tailwind CSS', 'REST APIs'],
   },
@@ -73,28 +83,35 @@ export const experience = [
 export const projects = [
   {
     title: 'RAG Against the Machine',
+    subtitle: 'Question answering over a codebase',
     category: 'ai',
     description:
-      'A Retrieval-Augmented Generation system for codebase Q&A. It indexes and chunks source data, retrieves the most relevant context, and uses an LLM to generate accurate answers from unstructured content.',
-    tech: ['Python', 'LLM', 'Embeddings', 'Vector Search', 'FAISS', 'Chunking'],
+      'End-to-end RAG pipeline that indexes the vLLM repository (1,941 files, 13,126 chunks), retrieves relevant passages with BM25, and generates grounded answers with a local LLM. Code-aware chunking splits Python files at functions and classes (ast module) and Markdown at headers.',
+    tech: ['Python', 'BM25', 'Hugging Face Transformers', 'Qwen3-0.6B', 'Pydantic', 'Python Fire'],
+    // Short results, shown as badges.
+    highlights: ['82% Recall@5 on docs', '61% Recall@5 on code', 'Indexed in ~24 s', '200 queries in ~25 s'],
     links: { github: 'https://github.com/hartant/RAG' },
     featured: true,
   },
   {
     title: 'Call Me Maybe',
+    subtitle: 'Function calling with LLMs',
     category: 'ai',
     description:
-      'Turns natural-language prompts into structured function calls with a small local LLM (Qwen3-0.6B). Constrained decoding with a token-level trie guarantees valid, schema-compliant JSON every time.',
-    tech: ['Python', 'LLM', 'Constrained Decoding', 'JSON'],
+      'Turns natural-language prompts into structured function calls, e.g. "sum of 2 and 3" → fn_add_numbers(a=2, b=3). Constrained decoding built from scratch: a token-level trie for function names and token masking for numbers, booleans and JSON structure. Data is validated with Pydantic, and errors are handled per prompt so one failure never stops the batch.',
+    tech: ['Python', 'Qwen3-0.6B', 'NumPy', 'Pydantic', 'uv', 'mypy', 'flake8'],
+    highlights: ['100% valid JSON', '0.6B-parameter model', 'Constrained decoding from scratch'],
     links: { github: 'https://github.com/hartant/call_me_baby' },
     featured: true,
   },
   {
     title: 'SCADA-IA — EcoEnergy Pioneers',
+    subtitle: 'Industrial IoT monitoring with ML',
     category: 'ai',
     description:
-      'Real-time supervision dashboard for an industrial cogeneration site (steam, electricity, water treatment): animated process diagram, ML-based predictions and anomaly detection, email alerts and a what-if simulator. Built for the MindX × OCP challenge.',
-    tech: ['Next.js', 'TypeScript', 'Python', 'Machine Learning', 'IoT'],
+      'Industrial IoT platform for the MindX × OCP challenge: a data pipeline from raw sensor data to prediction and anomaly-detection models, plus a real-time supervision dashboard (steam, electricity, water treatment) with an animated process diagram, email alerts and a what-if simulator.',
+    tech: ['Python', 'ETL', 'Machine Learning', 'Next.js', 'TypeScript', 'IoT'],
+    highlights: ['End-to-end ETL', 'Anomaly detection', 'Real-time alerts'],
     links: {
       github: 'https://github.com/hartant/ECOENERGY-PIONEERS',
       live: 'https://ecoenergy-pioneers-583a.vercel.app/',
@@ -105,6 +122,7 @@ export const projects = [
   // ---------- 1337 / SCHOOL PROJECTS ----------
   {
     title: 'Codexion',
+    subtitle: 'Multithreaded scheduler in C',
     category: 'school',
     description:
       'A multithreaded take on the Dining Philosophers problem: POSIX threads share limited resources using mutexes and condition variables, with a min-heap scheduler (FIFO / EDF) and a monitor thread for millisecond-precise shutdown.',
@@ -113,6 +131,7 @@ export const projects = [
   },
   {
     title: 'Fly-in',
+    subtitle: 'Drone routing simulation',
     category: 'school',
     description:
       'Drone routing simulation: parses a custom map format from scratch, builds a graph, plans routes with a custom Dijkstra-based algorithm under capacity constraints, and animates the fleet turn by turn in pygame.',
@@ -121,6 +140,7 @@ export const projects = [
   },
   {
     title: 'A-Maze-ing',
+    subtitle: 'Maze generator and solver',
     category: 'school',
     description:
       'Configurable maze generator and solver: builds perfect or looped mazes with a recursive backtracker, embeds a "42" pattern, finds the shortest path with BFS, and renders it in an interactive terminal UI.',
@@ -158,30 +178,28 @@ export const projectFilters = [
 ]
 
 export const skills = [
+  { group: 'Languages', items: ['Python', 'C', 'SQL', 'JavaScript', 'TypeScript', 'Shell'] },
   {
-    group: 'Languages',
-    items: ['Python', 'C', 'SQL', 'JavaScript', 'Shell Scripting'],
+    group: 'AI & Machine Learning',
+    items: ['LLM', 'RAG', 'Function Calling', 'Constrained Decoding', 'Hugging Face Transformers', 'PyTorch', 'Scikit-learn', 'TensorFlow', 'Anomaly Detection'],
   },
   {
-    group: 'AI & Data',
-    items: ['LLM-Assisted Extraction', 'RAG', 'Data Pipelines / ETL', 'Scikit-learn', 'TensorFlow'],
+    group: 'Data & Retrieval',
+    items: ['Data Pipelines / ETL', 'BM25', 'TF-IDF', 'Recall@k', 'Pydantic', 'JSON', 'Web Scraping', 'Regex'],
   },
-  {
-    group: 'Web & APIs',
-    items: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS', 'REST APIs', 'JSON', 'HTML Parsing', 'Web Scraping', 'Regex / Pattern Matching'],
-  },
-  {
-    group: 'Tools & Fundamentals',
-    items: ['Git / GitHub', 'Linux', 'Algorithms', 'Data Structures'],
-  },
+  { group: 'Web & APIs', items: ['React', 'Next.js', 'Tailwind CSS', 'REST APIs', 'HTML/CSS'] },
+  { group: 'Tools', items: ['Git', 'GitHub', 'Linux', 'uv', 'Makefile', 'mypy', 'flake8', 'pytest'] },
 ]
+
+export const softSkills = ['Problem solving', 'Fast learner', 'Self-driven', 'Teamwork & peer review']
+
 
 export const education = [
   {
     school: '1337 (42 Network) – UM6P',
-    detail: 'Computer Science — Coding School',
+    detail: 'Software Engineering / Computer Science',
     place: 'Ben Guerir',
-    period: '2025',
+    period: '2025 – Present',
   },
   {
     school: 'Faculty of Law, Economics and Social Sciences',
